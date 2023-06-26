@@ -1,6 +1,18 @@
 import 'package:fisioflex/pages/designs/background.dart';
+import 'package:fisioflex/pages/designs/buttons.dart';
 import 'package:fisioflex/pages/designs/inputs.dart';
+import 'package:fisioflex/pages/designs/txtTitle.dart';
+import 'package:fisioflex/pages/security/forgotPassword.dart';
+import 'package:fisioflex/pages/services/loginService.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+//VARIABLES GLOBALES
+bool _isKeyboardOpen = false;
+double _imageSize = 200.0;
+double _top = 0.35;
+String _userInput = '';
+String _passwordInput = '';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -9,57 +21,161 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      body: Stack(
-        children: [backGround(), LoginForm()],
-      ),
-    ));
+      child: Scaffold(body: createLogin()),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    final keyboardOpen = WidgetsBinding.instance.window.viewInsets.bottom > 0;
+    setState(() {
+      _isKeyboardOpen = keyboardOpen;
+      _imageSize = keyboardOpen ? 100.0 : 200.0;
+      _top = keyboardOpen ? 0.2 : 0.35;
+    });
+  }
+}
+
+class createLogin extends StatelessWidget {
+  const createLogin({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      Positioned.fill(child: background()),
+      Positioned(top: 0, left: 0, right: 0, child: Logo()),
+      Positioned.fill(
+          top: MediaQuery.of(context).size.height * _top,
+          left: 30,
+          right: 30,
+          child: LoginForm()),
+    ]);
   }
 }
 
 class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
+    return ListView(children: [
+      Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            txtTitle(),
+            txtTitle(
+              label: 'Inicio de Sesión',
+            ),
             SizedBox(height: 15),
             InputWidget(
                 label: 'Usuario',
                 hint: 'Ingresa tu usuario',
-                value: (value) {},
+                value: (value) => {_userInput = value},
                 keyboardType: TextInputType.text),
+            InputWidget(
+                label: 'Contraseña',
+                hint: 'Ingresa tu contraseña',
+                value: (value) => {_passwordInput = value},
+                keyboardType: TextInputType.text),
+            buttonFill(label: 'Ingresar', onPressed: login),
+            SizedBox(height: 9),
+            buttonTransparent(
+              label: 'Registrarme',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => forgotPassword()),
+                );
+              },
+            ),
+            SizedBox(height: 40),
+            btnForgotPassword()
           ],
         ),
       ),
-    );
+    ]);
   }
 }
 
-class txtTitle extends StatelessWidget {
-  const txtTitle({
+class Logo extends StatelessWidget {
+  const Logo({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Inicio de sesión',
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: Color(0xFF007BBD),
-        fontSize: 28,
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.w800,
+    return Container(
+        alignment: AlignmentDirectional.topCenter,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          height: _imageSize,
+          child: Image.asset("assets/images/logo.png", width: _imageSize),
+        ));
+  }
+}
+
+class btnForgotPassword extends StatefulWidget {
+  const btnForgotPassword({super.key});
+
+  @override
+  State<btnForgotPassword> createState() => _btnForgotPasswordState();
+}
+
+class _btnForgotPasswordState extends State<btnForgotPassword> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 3),
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => forgotPassword()),
+            );
+          },
+          child: RichText(
+            text: TextSpan(
+                text: 'Olvidé la contraseña',
+                style: TextStyle(
+                    color: Color.fromRGBO(0, 123, 189, 1),
+                    decoration: TextDecoration.underline,
+                    fontFamily: 'Nunito',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400)),
+          ),
+        ),
+        onHover: (PointerHoverEvent event) {
+          setState(() {});
+        },
       ),
     );
   }
+}
+
+void login() {
+  loginService(_userInput, _passwordInput);
+  print({'Usuario': _userInput, 'Contraseña': _passwordInput});
+}
+
+void redirectToRegister(BuildContext context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => forgotPassword()),
+  );
 }

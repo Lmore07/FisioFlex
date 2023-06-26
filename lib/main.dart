@@ -1,8 +1,10 @@
 import 'package:fisioflex/pages/security/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  await dotenv.load(); // Carga las variables de entorno desde el archivo .env
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +17,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'FisioFlex',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 6, 75, 170)),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 6, 75, 170)),
         useMaterial3: true,
       ),
       initialRoute: 'login',
