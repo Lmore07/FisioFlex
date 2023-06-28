@@ -17,7 +17,7 @@ class _dashboardClientState extends State<dashboardClient> {
           flexibleSpace: Row(
             children: [
               Column(
-                children: [Text('data'), Text('data')],
+                children: [Text('Hola'), Text('data')],
               ),
               Column(
                 children: [Logo()],
