@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
             ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 6, 75, 170)),
         useMaterial3: true,
       ),
-      initialRoute: 'login',
+      initialRoute: 'dashboard',
       routes: {
         'login': (context) => const Login(),
         'dashboard': (context) => const dashboardClient(),

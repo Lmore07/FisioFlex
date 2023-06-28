@@ -8,7 +8,7 @@ Future<bool> loginService(Credentials credentials) async {
   final apiBaseUrl = dotenv.env['API_AUTH'];
   Map<String, String> headers = {
     'Content-Type': 'application/json; charset=UTF-8',
-    'username': credentials.user,
+    'identification': credentials.user,
     'password': credentials.password
   };
   final body = jsonEncode({});

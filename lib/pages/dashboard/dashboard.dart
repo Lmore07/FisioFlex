@@ -1,4 +1,9 @@
+import 'package:fisioflex/pages/designs/appBar.dart';
+import 'package:fisioflex/pages/designs/cardButton.dart';
 import 'package:flutter/material.dart';
+
+//global variables
+String username = "";
 
 class dashboardClient extends StatefulWidget {
   const dashboardClient({super.key});
@@ -12,23 +17,46 @@ class _dashboardClientState extends State<dashboardClient> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(0, 123, 189, 1),
-          flexibleSpace: Row(
-            children: [
-              Column(
-                children: [Text('Hol'), Text('data')],
-              ),
-              Column(
-                children: [Logo()],
-              )
-            ],
+        backgroundColor: Color.fromRGBO(156, 211, 221, 1),
+        appBar: PreferredSize(
+          child: AppBarCustom(
+            username: username,
+            subTittle: 'FisioFlex',
+            tittle: 'Hola,',
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15)),
-          ),
+          preferredSize: Size.fromHeight(100),
+        ),
+        body: Container(
+          child: Column(children: [
+            SizedBox(height: 30),
+            cardButtonWidget(
+                icon: Icons.format_list_bulleted_rounded,
+                tittle: 'Tareas',
+                onPressed: () {
+                  print('Tareas presionado');
+                }),
+            SizedBox(height: 30),
+            cardButtonWidget(
+                icon: Icons.notifications_sharp,
+                tittle: 'Notificaciones',
+                onPressed: () {
+                  print('Notificaciones presionado');
+                }),
+            SizedBox(height: 30),
+            cardButtonWidget(
+                icon: Icons.person_3_sharp,
+                tittle: 'Mi perfil',
+                onPressed: () {
+                  print('Mi perfil presionado');
+                }),
+            SizedBox(height: 30),
+            cardButtonWidget(
+                icon: Icons.help_sharp,
+                tittle: 'Ayuda',
+                onPressed: () {
+                  print('Ayuda presionado');
+                }),
+          ]),
         ),
       ),
     );
