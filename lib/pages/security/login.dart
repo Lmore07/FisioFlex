@@ -1,7 +1,9 @@
+import 'package:fisioflex/pages/dashboard/dashboard.dart';
 import 'package:fisioflex/pages/designs/background.dart';
 import 'package:fisioflex/pages/designs/buttons.dart';
 import 'package:fisioflex/pages/designs/inputs.dart';
 import 'package:fisioflex/pages/designs/txtTitle.dart';
+import 'package:fisioflex/pages/interfaces/interfaces.dart';
 import 'package:fisioflex/pages/security/forgotPassword.dart';
 import 'package:fisioflex/pages/services/loginService.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +80,7 @@ class LoginForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             txtTitle(
-              label: 'Inicio de Sesión',
+              label: 'Inicio de sesión',
             ),
             SizedBox(height: 15),
             InputWidget(
@@ -91,17 +93,12 @@ class LoginForm extends StatelessWidget {
                 hint: 'Ingresa tu contraseña',
                 value: (value) => {_passwordInput = value},
                 keyboardType: TextInputType.text),
-            buttonFill(label: 'Ingresar', onPressed: login),
+            buttonFill(
+                label: 'Ingresar',
+                onPressed: () {
+                  login(context);
+                }),
             SizedBox(height: 9),
-            buttonTransparent(
-              label: 'Registrarme',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => forgotPassword()),
-                );
-              },
-            ),
             SizedBox(height: 40),
             btnForgotPassword()
           ],
@@ -144,10 +141,7 @@ class _btnForgotPasswordState extends State<btnForgotPassword> {
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => forgotPassword()),
-            );
+            Navigator.pushNamed(context, 'recovery-password');
           },
           child: RichText(
             text: TextSpan(
@@ -168,14 +162,14 @@ class _btnForgotPasswordState extends State<btnForgotPassword> {
   }
 }
 
-void login() {
-  loginService(_userInput, _passwordInput);
+void login(BuildContext context) {
+  loginService(Credentials(user: _userInput, password: _passwordInput))
+      .then((loggedIn) {
+    if (loggedIn) {
+      Navigator.pushNamed(context, 'dashboard');
+    } else {
+      print('Error en el login');
+    }
+  });
   print({'Usuario': _userInput, 'Contraseña': _passwordInput});
-}
-
-void redirectToRegister(BuildContext context) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => forgotPassword()),
-  );
 }

@@ -113,20 +113,14 @@ class forgotForm extends StatelessWidget {
             buttonFill(
               label: 'Continuar',
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => recoveryPassword()),
-                );
+                Navigator.pushNamed(context, 'reset-password');
               },
             ),
             SizedBox(height: 9),
             buttonTransparent(
                 label: 'Volver',
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Login()),
-                  );
+                  Navigator.pushNamed(context, 'login');
                 }),
             SizedBox(height: 30),
           ]),

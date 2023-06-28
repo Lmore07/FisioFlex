@@ -136,10 +136,7 @@ class recoveryForm extends StatelessWidget {
                 label: 'Volver',
                 onPressed: () {
                   textToSpeech.stop();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => forgotPassword()),
-                  );
+                  Navigator.pushNamed(context, 'login');
                 }),
             SizedBox(height: 20),
           ]),
