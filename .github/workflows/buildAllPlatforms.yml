@@ -1,0 +1,97 @@
+name: Build All Platforms
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'master'
+      - run: flutter config --enable-windows-desktop
+      - run: flutter build windows
+      - name: Save Windows Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Windows Artifact
+          path: build/windows/runner/Release/
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'master'
+      - run: flutter config --enable-linux-desktop
+      - run: flutter build linux
+      - name: Save Linux Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Linux Artifact
+          path: build/linux/
+
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'master'
+      - run: flutter config --enable-android
+      - run: flutter build apk
+      - name: Save Android Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Android Artifact
+          path: build/app/outputs/flutter-apk/
+
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'master'
+      - run: flutter config --enable-ios
+      - run: flutter build ios
+      - name: Save iOS Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: iOS Artifact
+          path: build/ios/
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'master'
+      - run: flutter config --enable-macos-desktop
+      - run: flutter build macos
+      - name: Save macOS Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: macOS Artifact
+          path: build/macos/
+
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'master'
+      - run: flutter config --enable-web
+      - run: flutter build web
+      - name: Save Web Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Web Artifact
+          path: build/web/
