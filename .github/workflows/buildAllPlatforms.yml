@@ -79,7 +79,7 @@ jobs:
           channel: 'master'
           architecture: x64
       - run: flutter config --enable-macos-desktop
-      - run: flutter build macos
+      - run: flutter build macos --release --no-codesign
       - name: Save macOS Artifact
         uses: actions/upload-artifact@v2
         with:
