@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class AppBarCustom extends StatelessWidget {
   final IconData? icon;
-  final String username;
+  final String? username;
   final String tittle;
   final String subTittle;
   final VoidCallback? onPressed;
 
   const AppBarCustom({
     super.key,
-    required this.username,
+    this.username,
     this.icon,
     required this.tittle,
     required this.subTittle,
@@ -21,6 +21,7 @@ class AppBarCustom extends StatelessWidget {
     return AppBar(
       backgroundColor: Color.fromRGBO(0, 123, 189, 1),
       toolbarHeight: 100,
+      automaticallyImplyLeading: false,
       flexibleSpace: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -49,11 +50,18 @@ class AppBarCustom extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text(tittle + " " + username,
-                        style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white)),
+                    if (username != null)
+                      Text(tittle + ' ' + username!,
+                          style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white)),
+                    if (username == null)
+                      Text(tittle,
+                          style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white)),
                   ],
                 )
               ],

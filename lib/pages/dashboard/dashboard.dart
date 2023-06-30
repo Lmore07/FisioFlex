@@ -26,37 +26,41 @@ class _dashboardClientState extends State<dashboardClient> {
           ),
           preferredSize: Size.fromHeight(100),
         ),
-        body: Container(
-          child: Column(children: [
-            SizedBox(height: 30),
-            cardButtonWidget(
-                icon: Icons.format_list_bulleted_rounded,
-                tittle: 'Tareas',
-                onPressed: () {
-                  print('Tareas presionado');
-                }),
-            SizedBox(height: 30),
-            cardButtonWidget(
-                icon: Icons.notifications_sharp,
-                tittle: 'Notificaciones',
-                onPressed: () {
-                  print('Notificaciones presionado');
-                }),
-            SizedBox(height: 30),
-            cardButtonWidget(
-                icon: Icons.person_3_sharp,
-                tittle: 'Mi perfil',
-                onPressed: () {
-                  print('Mi perfil presionado');
-                }),
-            SizedBox(height: 30),
-            cardButtonWidget(
-                icon: Icons.help_sharp,
-                tittle: 'Ayuda',
-                onPressed: () {
-                  print('Ayuda presionado');
-                }),
-          ]),
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(children: [
+              SizedBox(height: 25),
+              cardButtonWidget(
+                  icon: Icons.format_list_bulleted_rounded,
+                  tittle: 'Tareas',
+                  onPressed: () {
+                    print('Tareas presionado');
+                    redirectToTasksList(context);
+                  }),
+              SizedBox(height: 25),
+              cardButtonWidget(
+                  icon: Icons.notifications_sharp,
+                  tittle: 'Notificaciones',
+                  onPressed: () {
+                    print('Notificaciones presionado');
+                  }),
+              SizedBox(height: 25),
+              cardButtonWidget(
+                  icon: Icons.person_3_sharp,
+                  tittle: 'Mi perfil',
+                  onPressed: () {
+                    print('Mi perfil presionado');
+                  }),
+              SizedBox(height: 25),
+              cardButtonWidget(
+                  icon: Icons.help_sharp,
+                  tittle: 'Ayuda',
+                  onPressed: () {
+                    print('Ayuda presionado');
+                  }),
+              SizedBox(height: 25),
+            ]),
+          ),
         ),
       ),
     );
@@ -74,4 +78,8 @@ class Logo extends StatelessWidget {
         alignment: AlignmentDirectional.topCenter,
         child: Image.asset("assets/images/logo.png"));
   }
+}
+
+void redirectToTasksList(BuildContext context) {
+  Navigator.pushNamed(context, 'tasks-list');
 }

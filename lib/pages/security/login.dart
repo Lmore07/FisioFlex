@@ -118,7 +118,7 @@ class Logo extends StatelessWidget {
     return Container(
         alignment: AlignmentDirectional.topCenter,
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: Duration(milliseconds: 150),
           height: _imageSize,
           child: Image.asset("assets/images/logo.png", width: _imageSize),
         ));
