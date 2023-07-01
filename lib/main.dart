@@ -1,4 +1,5 @@
 import 'package:fisioflex/pages/dashboard/dashboard.dart';
+import 'package:fisioflex/pages/dashboard/options/detailTask.dart';
 import 'package:fisioflex/pages/dashboard/options/myAccount.dart';
 import 'package:fisioflex/pages/dashboard/options/tasks.dart';
 import 'package:fisioflex/pages/security/forgotPassword.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         'recovery-password': (context) => const forgotPassword(),
         'reset-password': (context) => const recoveryPassword(),
         'tasks-list': (context) => const tasksList(),
+        'detail-task': (context) => const detailTask(),
         'my-account': (context) => const myAccount(),
       },
     );

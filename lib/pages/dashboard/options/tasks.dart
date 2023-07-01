@@ -1,4 +1,5 @@
 import 'package:fisioflex/pages/designs/appBar.dart';
+import 'package:fisioflex/pages/designs/cardButton.dart';
 import 'package:flutter/material.dart';
 
 bool? selected;
@@ -47,7 +48,7 @@ class _tasksListState extends State<tasksList> {
                   color: Colors.white,
                   border: Border.all(width: 1, color: Colors.white),
                   borderRadius: BorderRadius.circular(10)),
-              child: DropdownButtonFormField(
+              child: DropdownButton(
                 onChanged: (value) {
                   setState(() {
                     selected = value;
@@ -73,12 +74,45 @@ class _tasksListState extends State<tasksList> {
                     fontFamily: 'Nunito',
                   ),
                 ),
+                underline: Container(),
               ),
             ),
             SizedBox(
               height: 20,
-            )
+            ),
+            taskList()
           ]),
+        ),
+      ),
+    );
+  }
+}
+
+class taskList extends StatelessWidget {
+  const taskList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              cardButtonTaskWidget(
+                  icon: Icons.format_list_bulleted_rounded,
+                  tittle: 'Tarea n',
+                  onPressed: () {
+                    print('Tareas presionado');
+                    Navigator.pushNamed(context, 'detail-task',
+                        arguments: {'id': 1, 'name': 'John'});
+                  }),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

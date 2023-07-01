@@ -69,9 +69,9 @@ class buttonTransparent extends StatelessWidget {
 }
 
 class buttonVoice extends StatelessWidget {
-  final String label;
+  final String? label;
   final VoidCallback onPressed;
-  const buttonVoice({super.key, required this.label, required this.onPressed});
+  const buttonVoice({super.key, this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -85,18 +85,86 @@ class buttonVoice extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(label,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w400,
-              )),
+          if (label != null)
+            Text(label!,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w400,
+                )),
           SizedBox(width: 10),
           Icon(Icons.record_voice_over, color: Colors.black)
         ],
       ),
+    );
+  }
+}
+
+class buttonVoiceIcon extends StatelessWidget {
+  final VoidCallback onPressed;
+  const buttonVoiceIcon({super.key, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: Color.fromRGBO(245, 176, 97, 1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [Icon(Icons.record_voice_over, color: Colors.black)],
+      ),
+    );
+  }
+}
+
+class buttonFinish extends StatelessWidget {
+  final String label;
+  final VoidCallback onPressed;
+
+  const buttonFinish({
+    super.key,
+    required this.label,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            primary: Color.fromRGBO(55, 197, 84, 1),
+            minimumSize: Size(double.infinity, 50),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+                side: BorderSide(color: Color.fromRGBO(55, 197, 84, 1))),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.white,
+              ),
+              SizedBox(width: 10),
+              Text(label,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400,
+                  )),
+            ],
+          ),
+        )
+      ],
     );
   }
 }
