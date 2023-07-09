@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class VideoPlayerScreen extends StatelessWidget {
   final String videoUrl;
@@ -9,33 +10,49 @@ class VideoPlayerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late ChewieController _chewieController;
+    late VideoPlayerController _videoPlayerController;
+
     if (isYoutubeLink(videoUrl)) {
       // Si es un enlace de YouTube, utiliza YoutubePlayer
-      String videoId = getYouTubeVideoId(videoUrl);
+      YoutubePlayerController _controller = YoutubePlayerController(
+        initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
+        flags: YoutubePlayerFlags(
+          autoPlay: true,
+          controlsVisibleAtStart: true,
+          mute: false,
+        ),
+      );
       return SafeArea(
         child: Container(
           child: Center(
-            child: YoutubePlayer(
-              controller: YoutubePlayerController(
-                initialVideoId: videoId,
-                flags: YoutubePlayerFlags(
-                    autoPlay: true, mute: false, controlsVisibleAtStart: true),
-              ),
-              showVideoProgressIndicator: true,
-            ),
+            child: YoutubePlayerBuilder(
+                player: YoutubePlayer(
+                  controller: _controller,
+                  showVideoProgressIndicator: true,
+                ),
+                builder: (context, player) {
+                  return player;
+                }),
           ),
         ),
       );
     } else {
+      _videoPlayerController = VideoPlayerController.network(videoUrl);
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController,
+        autoPlay: true,
+        looping: true,
+      );
+
       // Si no es un enlace de YouTube, utiliza VideoPlayer
       VideoPlayerController videoPlayerController =
-          VideoPlayerController.networkUrl(Uri.parse(videoUrl));
-      return Scaffold(
-        body: Container(
+          VideoPlayerController.networkUrl(Uri.parse(videoUrl))..initialize();
+      return SafeArea(
+        child: Container(
           child: Center(
-            child: AspectRatio(
-              aspectRatio: videoPlayerController.value.aspectRatio,
-              child: VideoPlayer(videoPlayerController),
+            child: Chewie(
+              controller: _chewieController,
             ),
           ),
         ),

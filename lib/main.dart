@@ -1,5 +1,6 @@
 import 'package:fisioflex/pages/dashboard/dashboard.dart';
 import 'package:fisioflex/pages/dashboard/options/detailTask.dart';
+import 'package:fisioflex/pages/dashboard/options/help.dart';
 import 'package:fisioflex/pages/dashboard/options/myAccount.dart';
 import 'package:fisioflex/pages/dashboard/options/tasks.dart';
 import 'package:fisioflex/pages/security/forgotPassword.dart';
@@ -8,13 +9,13 @@ import 'package:fisioflex/pages/security/recoveryPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fisioflex/pages/classes/sharedPreferences.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 Map<String, dynamic>? savedResponse;
 
 Future<void> main() async {
   await dotenv.load(); // Carga las variables de entorno desde el archivo .env
-  savedResponse = await getJson('response');
-  print(savedResponse);
+  savedResponse = await getJson('login');
   runApp(const MyApp());
 }
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
             ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 6, 75, 170)),
         useMaterial3: true,
       ),
+      builder: EasyLoading.init(),
       initialRoute: (savedResponse == null) ? 'login' : 'dashboard',
       routes: {
         'login': (context) => const Login(),
@@ -41,6 +43,7 @@ class MyApp extends StatelessWidget {
         'tasks-list': (context) => const tasksList(),
         'detail-task': (context) => const detailTask(),
         'my-account': (context) => const myAccount(),
+        'help': (context) => const helpMenu(),
       },
     );
   }

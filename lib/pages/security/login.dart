@@ -1,13 +1,14 @@
+import 'package:fisioflex/pages/classes/alerts.dart';
 import 'package:fisioflex/pages/dashboard/dashboard.dart';
 import 'package:fisioflex/pages/designs/background.dart';
 import 'package:fisioflex/pages/designs/buttons.dart';
 import 'package:fisioflex/pages/designs/inputs.dart';
 import 'package:fisioflex/pages/designs/txtTitle.dart';
 import 'package:fisioflex/pages/interfaces/interfaces.dart';
-import 'package:fisioflex/pages/security/forgotPassword.dart';
 import 'package:fisioflex/pages/services/loginService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 //VARIABLES GLOBALES
 bool _isKeyboardOpen = false;
@@ -84,15 +85,17 @@ class LoginForm extends StatelessWidget {
             ),
             SizedBox(height: 15),
             InputWidget(
+                enable: true,
                 label: 'Usuario',
                 hint: 'Ingresa tu usuario',
                 value: (value) => {_userInput = value},
-                keyboardType: TextInputType.text),
+                keyboardType: TextInputType.number),
             InputWidget(
+                enable: true,
                 label: 'Contraseña',
                 hint: 'Ingresa tu contraseña',
                 value: (value) => {_passwordInput = value},
-                keyboardType: TextInputType.text),
+                keyboardType: TextInputType.visiblePassword),
             buttonFill(
                 label: 'Ingresar',
                 onPressed: () {
@@ -163,13 +166,30 @@ class _btnForgotPasswordState extends State<btnForgotPassword> {
 }
 
 void login(BuildContext context) {
+  CustomEasyLoading.instance.showLoading('Iniciando sesión...');
+
   loginService(Credentials(user: _userInput, password: _passwordInput))
       .then((loggedIn) {
-    if (loggedIn) {
-      Navigator.pushNamed(context, 'dashboard');
-    } else {
-      print('Error en el login');
+    switch (loggedIn) {
+      case 0:
+        CustomEasyLoading.instance.dismiss();
+        CustomEasyLoading.instance.showError('APP es solo para pacientes');
+        break;
+      case 1:
+        CustomEasyLoading.instance.dismiss();
+        CustomEasyLoading.instance.showSuccess('Bienvenido');
+        Navigator.pushNamed(context, 'dashboard');
+        break;
+      case 2:
+        CustomEasyLoading.instance.dismiss();
+        CustomEasyLoading.instance
+            .showError('Usuario o contraseña incorrectos');
+        break;
+      case 3:
+        CustomEasyLoading.instance.dismiss();
+        CustomEasyLoading.instance.showError('Ha ocurrido un error inesperado');
+        break;
+      default:
     }
   });
-  print({'Usuario': _userInput, 'Contraseña': _passwordInput});
 }

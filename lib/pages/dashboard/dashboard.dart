@@ -49,6 +49,7 @@ class _dashboardClientState extends State<dashboardClient> {
                   icon: Icons.person_3_sharp,
                   tittle: 'Mi perfil',
                   onPressed: () {
+                    redirectToAccount(context);
                     print('Mi perfil presionado');
                   }),
               SizedBox(height: 25),
@@ -56,6 +57,7 @@ class _dashboardClientState extends State<dashboardClient> {
                   icon: Icons.help_sharp,
                   tittle: 'Ayuda',
                   onPressed: () {
+                    redirectToHelp(context);
                     print('Ayuda presionado');
                   }),
               SizedBox(height: 25),
@@ -82,4 +84,12 @@ class Logo extends StatelessWidget {
 
 void redirectToTasksList(BuildContext context) {
   Navigator.pushNamed(context, 'tasks-list');
+}
+
+void redirectToAccount(BuildContext context) {
+  Navigator.pushNamed(context, 'my-account');
+}
+
+void redirectToHelp(BuildContext context) {
+  Navigator.pushNamed(context, 'help');
 }

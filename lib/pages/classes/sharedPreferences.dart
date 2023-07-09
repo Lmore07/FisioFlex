@@ -17,3 +17,12 @@ Future<Map<String, dynamic>?> getJson(String key) async {
   }
   return null;
 }
+
+// Eliminar un objeto JSON
+Future<bool?> removeData(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (await prefs.remove(key)) {
+    return true;
+  }
+  return null;
+}

@@ -96,16 +96,19 @@ class forgotForm extends StatelessWidget {
             ),
             SizedBox(height: 15),
             InputWidget(
+                enable: true,
                 label: 'Cedula',
                 hint: 'Ingrese su cédula',
                 value: (value) => {_cedulaInput = value},
                 keyboardType: TextInputType.number),
             InputWidget(
+                enable: true,
                 label: 'Nueva contraseña',
                 hint: 'Ingrese una nueva contraseña',
                 value: (value) => {_passwordInput = value},
                 keyboardType: TextInputType.number),
             InputWidget(
+                enable: true,
                 label: 'Confirmar contraseña',
                 hint: 'Repita su nueva contraseña',
                 value: (value) => {_confirmPasswordInput = value},

@@ -72,10 +72,11 @@ class AppBarCustom extends StatelessWidget {
               Flexible(
                 child: Container(
                   alignment: Alignment.centerRight,
-                  padding: EdgeInsets.only(top: 20, right: 20, bottom: 10),
+                  margin: EdgeInsetsDirectional.only(end: 5),
+                  padding: EdgeInsetsDirectional.only(top: 20, bottom: 10),
                   child: Image.asset(
                     "assets/images/logo.png",
-                    fit: BoxFit.scaleDown,
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
               )

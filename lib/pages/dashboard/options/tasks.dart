@@ -1,3 +1,4 @@
+import 'package:fisioflex/pages/classes/alerts.dart';
 import 'package:fisioflex/pages/designs/appBar.dart';
 import 'package:fisioflex/pages/designs/cardButton.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,9 @@ class _tasksListState extends State<tasksList> {
             child: AppBarCustom(
               tittle: 'Tareas',
               subTittle: 'Atrás',
+              onPressed: () {
+                Navigator.pushNamed(context, 'dashboard');
+              },
               icon: Icons.arrow_back_rounded,
             )),
         body: Container(

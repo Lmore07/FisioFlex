@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 
 class InputWidget extends StatelessWidget {
   final String label;
-  final String hint;
-  final Function(String) value;
+  final bool enable;
+  final String? hint;
+  final Function(String)? value;
   final TextInputType keyboardType;
 
   const InputWidget(
       {super.key,
       required this.label,
-      required this.hint,
-      required this.value,
+      this.hint,
+      required this.enable,
+      this.value,
       required this.keyboardType});
 
   @override
@@ -18,6 +20,7 @@ class InputWidget extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       child: TextField(
+        enabled: enable,
         keyboardType: keyboardType,
         onChanged: value,
         decoration: InputDecoration(
@@ -39,6 +42,42 @@ class InputWidget extends StatelessWidget {
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: Color(0xFFEDEDED), width: 0))),
+      ),
+    );
+  }
+}
+
+class InputWidgetProfile extends StatelessWidget {
+  final String label;
+  final int? maxLines;
+  const InputWidgetProfile({super.key, required this.label, this.maxLines});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      child: TextField(
+        enabled: false,
+        keyboardType: TextInputType.none,
+        maxLines: maxLines ?? 1,
+        decoration: InputDecoration(
+            labelText: label,
+            filled: true,
+            floatingLabelStyle: TextStyle(
+              color: Colors.black,
+            ),
+            alignLabelWithHint: true,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 10,
+            ),
+            fillColor: Color(0xFFEDEDED),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+            ),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.white, width: 0))),
       ),
     );
   }

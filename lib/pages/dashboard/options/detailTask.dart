@@ -1,12 +1,10 @@
+import 'package:fisioflex/pages/classes/alerts.dart';
 import 'package:fisioflex/pages/classes/textToSpeech.dart';
 import 'package:fisioflex/pages/designs/appBar.dart';
 import 'package:fisioflex/pages/designs/buttons.dart';
 import 'package:fisioflex/pages/designs/txtParraph.dart';
-import 'package:fisioflex/pages/designs/txtTitle.dart';
-import 'package:fisioflex/pages/designs/videoPlayer.dart';
-import 'package:fisioflex/pages/security/recoveryPassword.dart';
+import 'package:fisioflex/pages/classes/videoPlayer.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
 TextToSpeech textToSpeech = TextToSpeech();
 
@@ -28,46 +26,61 @@ class _detailTaskState extends State<detailTask> {
             child: AppBarCustom(
               tittle: 'Detalle de tarea',
               subTittle: 'Atrás',
+              onPressed: () {
+                Navigator.pushNamed(context, 'tasks-list');
+              },
               icon: Icons.arrow_back_rounded,
             )),
         body: SingleChildScrollView(
-          child: Container(
-              padding: EdgeInsetsDirectional.all(20),
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Titulo de la tarea',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.w800),
-                        ),
-                        buttonVoiceIcon(onPressed: () {
-                          textToSpeech.speak('Probando detalle');
-                        }),
-                      ]),
-                  txtParraph(label: 'label'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Video explicativo',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w800),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  VideoPlayerScreen(
-                      videoUrl: 'https://www.youtube.com/watch?v=5sPQiHIA8Y8'),
-                  SizedBox(height: 20),
-                  buttonFinish(label: 'Finalizar tarea', onPressed: () {}),
-                ],
-              )),
+          child: detailTaskWidget(),
         ),
       ),
     );
+  }
+}
+
+class detailTaskWidget extends StatelessWidget {
+  const detailTaskWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsetsDirectional.all(20),
+        child: Column(
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                'Titulo de la tarea',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+              ),
+              buttonVoiceIcon(onPressed: () {
+                textToSpeech.speak('Probando detalle');
+              }),
+            ]),
+            txtParraph(label: 'label'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Video explicativo',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            VideoPlayerScreen(
+                videoUrl: 'https://www.youtube.com/watch?v=v_zZmsFZDaM'),
+            SizedBox(height: 20),
+            buttonFinish(
+                label: 'Finalizar tarea',
+                onPressed: () {
+                  CustomEasyLoading.instance
+                      .showSuccess('Se ha completado su tarea');
+                }),
+          ],
+        ));
   }
 }
