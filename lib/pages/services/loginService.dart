@@ -1,4 +1,5 @@
 import 'package:fisioflex/pages/classes/alerts.dart';
+import 'package:fisioflex/pages/classes/decodeJWT.dart';
 import 'package:fisioflex/pages/classes/messages.dart';
 import 'package:fisioflex/pages/classes/sharedPreferences.dart';
 import 'package:fisioflex/pages/interfaces/interfaces.dart';
@@ -21,8 +22,11 @@ Future<int> loginService(Credentials credentials) async {
         body: body, headers: headers);
     if (await response.statusCode >= 200 && await response.statusCode < 300) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      await saveJson('login', jsonResponse);
-      if (jsonResponse['role'] != 'PATIENT') {
+      await saveString('token', jsonResponse['token']);
+      LoginInformation decoded = decodificarToken(jsonResponse['token']);
+      await saveString('idUser', decoded.id.toString());
+      await saveString('docNumber', decoded.docNumber);
+      if (decoded.role != 'PATIENT') {
         return 0;
       }
       return 1;

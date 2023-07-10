@@ -1,9 +1,12 @@
 import 'package:fisioflex/pages/classes/alerts.dart';
 import 'package:fisioflex/pages/designs/appBar.dart';
 import 'package:fisioflex/pages/designs/cardButton.dart';
+import 'package:fisioflex/pages/interfaces/interfaces.dart';
+import 'package:fisioflex/pages/services/tasks.dart';
 import 'package:flutter/material.dart';
 
-bool? selected;
+bool selected = true;
+List<Task> listTasks = [];
 
 class tasksList extends StatefulWidget {
   const tasksList({super.key});
@@ -13,6 +16,17 @@ class tasksList extends StatefulWidget {
 }
 
 class _tasksListState extends State<tasksList> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTaskService().then((value) {
+      setState(() {
+        listTasks = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -55,7 +69,7 @@ class _tasksListState extends State<tasksList> {
               child: DropdownButton(
                 onChanged: (value) {
                   setState(() {
-                    selected = value;
+                    selected = value!;
                     print(selected);
                   });
                 },
@@ -104,14 +118,18 @@ class taskList extends StatelessWidget {
         child: Container(
           child: Column(
             children: [
-              cardButtonTaskWidget(
-                  icon: Icons.format_list_bulleted_rounded,
-                  tittle: 'Tarea n',
-                  onPressed: () {
-                    print('Tareas presionado');
-                    Navigator.pushNamed(context, 'detail-task',
-                        arguments: {'id': 1, 'name': 'John'});
-                  }),
+              for (var task in listTasks)
+                cardButtonTaskWidget(
+                    icon: Icons.format_list_bulleted_rounded,
+                    tittle: task.task.title,
+                    subtitle:
+                        'Tiempo estimado para la actividad ${task.estimatedTime} minutos',
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'detail-task', arguments: {
+                        'idTask': task.task.id,
+                        'idAssigment': task.id
+                      });
+                    }),
               SizedBox(
                 height: 20,
               ),

@@ -59,10 +59,12 @@ class cardButtonTaskWidget extends StatelessWidget {
   final String tittle;
   final IconData icon;
   final VoidCallback onPressed;
+  final String? subtitle;
   const cardButtonTaskWidget({
     super.key,
     required this.tittle,
     required this.icon,
+    this.subtitle,
     required this.onPressed,
   });
 
@@ -89,11 +91,31 @@ class cardButtonTaskWidget extends StatelessWidget {
             SizedBox(width: 20),
             Column(
               children: [
-                Text(tittle,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400))
+                Container(
+                  constraints: BoxConstraints(maxWidth: 200),
+                  child: Wrap(
+                    children: [
+                      Text(tittle,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400))
+                    ],
+                  ),
+                ),
+                if (subtitle != null)
+                  Container(
+                    constraints: BoxConstraints(maxWidth: 200),
+                    child: Wrap(children: [
+                      Text(
+                        subtitle!,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ]),
+                  )
               ],
             ),
           ],

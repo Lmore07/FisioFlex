@@ -11,11 +11,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fisioflex/pages/classes/sharedPreferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-Map<String, dynamic>? savedResponse;
+String? savedResponse;
 
 Future<void> main() async {
   await dotenv.load(); // Carga las variables de entorno desde el archivo .env
-  savedResponse = await getJson('login');
+  //await removeData('token');
+  savedResponse = await getString('token');
   runApp(const MyApp());
 }
 

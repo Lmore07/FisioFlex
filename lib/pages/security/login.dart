@@ -167,7 +167,6 @@ class _btnForgotPasswordState extends State<btnForgotPassword> {
 
 void login(BuildContext context) {
   CustomEasyLoading.instance.showLoading('Iniciando sesión...');
-
   loginService(Credentials(user: _userInput, password: _passwordInput))
       .then((loggedIn) {
     switch (loggedIn) {

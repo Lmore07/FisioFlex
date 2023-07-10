@@ -6,7 +6,7 @@ class CustomEasyLoading {
 
   CustomEasyLoading._internal() {
     EasyLoading.instance
-      ..indicatorType = EasyLoadingIndicatorType.chasingDots
+      ..indicatorType = EasyLoadingIndicatorType.circle
       ..indicatorSize = 45.0
       ..radius = 15.0;
   }
@@ -16,7 +16,9 @@ class CustomEasyLoading {
       ..backgroundColor = Colors.white
       ..loadingStyle = EasyLoadingStyle.custom
       ..indicatorColor = Colors.green
-      ..progressColor = Colors.white
+      ..textColor = Colors.black
+      ..textStyle = TextStyle(
+          color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400)
       ..maskColor = Colors.black.withOpacity(0.5);
     EasyLoading.show(status: message, maskType: EasyLoadingMaskType.custom);
   }
@@ -26,7 +28,6 @@ class CustomEasyLoading {
       ..backgroundColor = Colors.white
       ..loadingStyle = EasyLoadingStyle.custom
       ..indicatorSize = 60.0
-      ..indicatorWidget = Icon(Icons.check_circle_outline)
       ..textColor = Colors.black
       ..textStyle = TextStyle(
           color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400)
@@ -38,12 +39,13 @@ class CustomEasyLoading {
   void showError(String message) {
     EasyLoading.instance
       ..backgroundColor = Colors.red
-      ..indicatorWidget = Icon(Icons.error)
       ..loadingStyle = EasyLoadingStyle.custom
       ..indicatorColor = Colors.white
       ..textColor = Colors.white
       ..textStyle = TextStyle(
-          color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400);
+          color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400)
+      ..maskColor = Colors.black.withOpacity(0.5);
+    ;
     EasyLoading.showError(message,
         maskType: EasyLoadingMaskType.black, duration: Duration(seconds: 1));
   }
