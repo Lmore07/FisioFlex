@@ -1,11 +1,18 @@
+import 'dart:io';
+
+import 'package:webview_flutter_platform_interface/src/platform_navigation_delegate.dart';
 import 'package:flutter/material.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart'
+    as mobile_youtube;
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart'
+    as desktop_youtube;
 
 ChewieController? _chewieController;
 VideoPlayerController? _videoPlayerController;
-YoutubePlayerController? _youtubePlayerController;
+mobile_youtube.YoutubePlayerController? _youtubePlayerController;
+desktop_youtube.YoutubePlayerController? _desktopYoutubePlayerController;
 
 class VideoPlayerScreen extends StatefulWidget {
   final String url;
@@ -22,6 +29,9 @@ class VideoPlayerScreen extends StatefulWidget {
       _youtubePlayerController?.pause();
       _youtubePlayerController?.dispose();
     }
+    if (_desktopYoutubePlayerController != null) {
+      _desktopYoutubePlayerController?.stopVideo();
+    }
   }
 
   @override
@@ -32,6 +42,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   bool isYoutubeLink(String link) {
     // Verifica si el enlace contiene la estructura típica de un enlace de YouTube
     return link.contains('youtube.com') || link.contains('youtu.be');
+  }
+
+  String getYouTubeVideoId(String link) {
+    Uri uri = Uri.parse(link);
+    String videoId = uri.queryParameters['v'] ?? '';
+    return videoId;
   }
 
   @override
@@ -50,13 +66,23 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
     if (isYoutubeLink(widget.url)) {
       // Configuración para enlaces de YouTube
-      _youtubePlayerController = YoutubePlayerController(
-          initialVideoId: YoutubePlayer.convertUrlToId(widget.url)!,
-          flags: YoutubePlayerFlags(
-            autoPlay: true,
-            controlsVisibleAtStart: true,
-            mute: false,
-          ));
+      if (Platform.isAndroid || Platform.isIOS) {
+        _youtubePlayerController = mobile_youtube.YoutubePlayerController(
+            initialVideoId:
+                mobile_youtube.YoutubePlayer.convertUrlToId(widget.url)!,
+            flags: mobile_youtube.YoutubePlayerFlags(
+              autoPlay: true,
+              controlsVisibleAtStart: true,
+              mute: false,
+            ));
+      } else if (Platform.isLinux || Platform.isWindows) {
+        _desktopYoutubePlayerController =
+            desktop_youtube.YoutubePlayerController.fromVideoId(
+                videoId: getYouTubeVideoId(widget.url),
+                autoPlay: true,
+                params: desktop_youtube.YoutubePlayerParams(
+                    showFullscreenButton: true));
+      }
     } else {
       // Configuración para videos no relacionados con YouTube
       _videoPlayerController = VideoPlayerController.network(widget.url);
@@ -73,17 +99,31 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     return SafeArea(
       child: Container(
           child: Center(
-              child: isYoutubeLink(widget.url)
-                  ? YoutubePlayerBuilder(
-                      player: YoutubePlayer(
-                        controller: _youtubePlayerController!,
-                        showVideoProgressIndicator: true,
-                      ),
-                      builder: (context, player) {
-                        return player;
-                      },
-                    )
-                  : Chewie(controller: _chewieController!))),
+              child: Column(
+        children: [
+          if ((Platform.isAndroid || Platform.isIOS) &&
+              isYoutubeLink(widget.url))
+            mobile_youtube.YoutubePlayerBuilder(
+              player: mobile_youtube.YoutubePlayer(
+                controller: _youtubePlayerController!,
+                showVideoProgressIndicator: true,
+              ),
+              builder: (context, player) {
+                return player;
+              },
+            )
+          else if ((Platform.isWindows || Platform.isLinux) &&
+              isYoutubeLink(widget.url))
+            desktop_youtube.YoutubePlayerControllerProvider(
+              controller: _desktopYoutubePlayerController!,
+              child: desktop_youtube.YoutubePlayer(
+                controller: _desktopYoutubePlayerController!,
+              ),
+            )
+          else
+            Chewie(controller: _chewieController!)
+        ],
+      ))),
     );
   }
 }
