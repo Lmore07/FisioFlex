@@ -38,8 +38,7 @@ class _helpMenuState extends State<helpMenu> {
                     constraints: BoxConstraints(maxHeight: 150),
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 25),
                     child: VideoPlayerScreen(
-                        videoUrl:
-                            "https://www.youtube.com/watch?v=jnupRKdJkwM")),
+                        url: "https://www.youtube.com/watch?v=jnupRKdJkwM")),
               ],
             ),
           ),

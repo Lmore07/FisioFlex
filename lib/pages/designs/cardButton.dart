@@ -19,7 +19,7 @@ class cardButtonWidget extends StatelessWidget {
         onTap: onPressed,
         child: Container(
           width: double.infinity,
-          padding: EdgeInsetsDirectional.all(20),
+          padding: EdgeInsetsDirectional.all(25),
           decoration: BoxDecoration(
               color: Color.fromRGBO(248, 184, 48, 1),
               borderRadius: BorderRadius.circular(15)),
@@ -42,7 +42,7 @@ class cardButtonWidget extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 24,
                             fontWeight: FontWeight.w400))
                   ],
                 ),

@@ -8,7 +8,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 
-Future<int> loginService(Credentials credentials) async {
+Future<String> loginService(Credentials credentials) async {
   final apiBaseUrl = dotenv.env['API_BASE'];
   Map<String, String> headers = {
     'Content-Type': 'application/json; charset=UTF-8',
@@ -27,13 +27,13 @@ Future<int> loginService(Credentials credentials) async {
       await saveString('idUser', decoded.id.toString());
       await saveString('docNumber', decoded.docNumber);
       if (decoded.role != 'PATIENT') {
-        return 0;
+        return 'NO_GRANTED';
       }
-      return 1;
+      return 'OK';
     } else {
-      return 2;
+      return 'ERROR_INFO';
     }
   } catch (error) {
-    return 3;
+    return error.toString();
   }
 }

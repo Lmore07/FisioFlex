@@ -36,6 +36,19 @@ class CustomEasyLoading {
         maskType: EasyLoadingMaskType.black, duration: Duration(seconds: 1));
   }
 
+  void showMessage(String message) {
+    EasyLoading.instance
+      ..backgroundColor = Colors.white
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..indicatorSize = 60.0
+      ..textColor = Colors.black
+      ..textStyle = TextStyle(
+          color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400)
+      ..indicatorColor = Colors.green;
+    EasyLoading.showToast(message,
+        maskType: EasyLoadingMaskType.black, duration: Duration(seconds: 1));
+  }
+
   void showError(String message) {
     EasyLoading.instance
       ..backgroundColor = Colors.red

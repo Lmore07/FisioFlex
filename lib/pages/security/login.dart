@@ -170,25 +170,24 @@ void login(BuildContext context) {
   loginService(Credentials(user: _userInput, password: _passwordInput))
       .then((loggedIn) {
     switch (loggedIn) {
-      case 0:
+      case 'NO_GRANTED':
         CustomEasyLoading.instance.dismiss();
         CustomEasyLoading.instance.showError('APP es solo para pacientes');
         break;
-      case 1:
+      case 'OK':
         CustomEasyLoading.instance.dismiss();
         CustomEasyLoading.instance.showSuccess('Bienvenido');
         Navigator.pushNamed(context, 'dashboard');
         break;
-      case 2:
+      case 'ERROR_INFO':
         CustomEasyLoading.instance.dismiss();
         CustomEasyLoading.instance
             .showError('Usuario o contraseña incorrectos');
         break;
-      case 3:
-        CustomEasyLoading.instance.dismiss();
-        CustomEasyLoading.instance.showError('Ha ocurrido un error inesperado');
-        break;
       default:
+        CustomEasyLoading.instance.dismiss();
+        CustomEasyLoading.instance.showError(loggedIn);
+        break;
     }
   });
 }

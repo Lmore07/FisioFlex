@@ -26,42 +26,46 @@ class _dashboardClientState extends State<dashboardClient> {
           ),
           preferredSize: Size.fromHeight(100),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            child: Column(children: [
-              SizedBox(height: 25),
-              cardButtonWidget(
-                  icon: Icons.format_list_bulleted_rounded,
-                  tittle: 'Tareas',
-                  onPressed: () {
-                    print('Tareas presionado');
-                    redirectToTasksList(context);
-                  }),
-              SizedBox(height: 25),
-              cardButtonWidget(
-                  icon: Icons.notifications_sharp,
-                  tittle: 'Notificaciones',
-                  onPressed: () {
-                    print('Notificaciones presionado');
-                  }),
-              SizedBox(height: 25),
-              cardButtonWidget(
-                  icon: Icons.person_3_sharp,
-                  tittle: 'Mi perfil',
-                  onPressed: () {
-                    redirectToAccount(context);
-                    print('Mi perfil presionado');
-                  }),
-              SizedBox(height: 25),
-              cardButtonWidget(
-                  icon: Icons.help_sharp,
-                  tittle: 'Ayuda',
-                  onPressed: () {
-                    redirectToHelp(context);
-                    print('Ayuda presionado');
-                  }),
-              SizedBox(height: 25),
-            ]),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              alignment: Alignment.center,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    cardButtonWidget(
+                        icon: Icons.format_list_bulleted_rounded,
+                        tittle: 'Tareas',
+                        onPressed: () {
+                          print('Tareas presionado');
+                          redirectToTasksList(context);
+                        }),
+                    SizedBox(height: 25),
+                    cardButtonWidget(
+                        icon: Icons.notifications_sharp,
+                        tittle: 'Notificaciones',
+                        onPressed: () {
+                          print('Notificaciones presionado');
+                        }),
+                    SizedBox(height: 25),
+                    cardButtonWidget(
+                        icon: Icons.person_3_sharp,
+                        tittle: 'Mi perfil',
+                        onPressed: () {
+                          redirectToAccount(context);
+                          print('Mi perfil presionado');
+                        }),
+                    SizedBox(height: 25),
+                    cardButtonWidget(
+                        icon: Icons.help_sharp,
+                        tittle: 'Ayuda',
+                        onPressed: () {
+                          redirectToHelp(context);
+                          print('Ayuda presionado');
+                        }),
+                    SizedBox(height: 25),
+                  ]),
+            ),
           ),
         ),
       ),

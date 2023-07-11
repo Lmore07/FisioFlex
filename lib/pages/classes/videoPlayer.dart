@@ -3,72 +3,87 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
-class VideoPlayerScreen extends StatelessWidget {
-  final String videoUrl;
+ChewieController? _chewieController;
+VideoPlayerController? _videoPlayerController;
+YoutubePlayerController? _youtubePlayerController;
 
-  VideoPlayerScreen({required this.videoUrl});
+class VideoPlayerScreen extends StatefulWidget {
+  final String url;
+  const VideoPlayerScreen({super.key, required this.url});
 
-  @override
-  Widget build(BuildContext context) {
-    late ChewieController _chewieController;
-    late VideoPlayerController _videoPlayerController;
-
-    if (isYoutubeLink(videoUrl)) {
-      // Si es un enlace de YouTube, utiliza YoutubePlayer
-      YoutubePlayerController _controller = YoutubePlayerController(
-        initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
-        flags: YoutubePlayerFlags(
-          autoPlay: true,
-          controlsVisibleAtStart: true,
-          mute: false,
-        ),
-      );
-      return SafeArea(
-        child: Container(
-          child: Center(
-            child: YoutubePlayerBuilder(
-                player: YoutubePlayer(
-                  controller: _controller,
-                  showVideoProgressIndicator: true,
-                ),
-                builder: (context, player) {
-                  return player;
-                }),
-          ),
-        ),
-      );
-    } else {
-      _videoPlayerController = VideoPlayerController.network(videoUrl);
-      _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController,
-        autoPlay: true,
-        looping: true,
-      );
-
-      // Si no es un enlace de YouTube, utiliza VideoPlayer
-      VideoPlayerController videoPlayerController =
-          VideoPlayerController.networkUrl(Uri.parse(videoUrl))..initialize();
-      return SafeArea(
-        child: Container(
-          child: Center(
-            child: Chewie(
-              controller: _chewieController,
-            ),
-          ),
-        ),
-      );
+  void dispose() {
+    if (_chewieController != null) {
+      _chewieController?.dispose();
+    }
+    if (_videoPlayerController != null) {
+      _videoPlayerController?.dispose();
+    }
+    if (_youtubePlayerController != null) {
+      _youtubePlayerController?.pause();
+      _youtubePlayerController?.dispose();
     }
   }
 
+  @override
+  State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
+}
+
+class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   bool isYoutubeLink(String link) {
     // Verifica si el enlace contiene la estructura típica de un enlace de YouTube
     return link.contains('youtube.com') || link.contains('youtu.be');
   }
 
-  String getYouTubeVideoId(String link) {
-    // Obtiene el ID del video de YouTube a partir del enlace
-    Uri uri = Uri.parse(link);
-    String videoId = uri.queryParameters['v'] ?? '';
-    return videoId;
+  @override
+  void dispose() {
+    // Libera los recursos de los controladores de video al salir del componente
+    _chewieController?.dispose();
+    _videoPlayerController?.dispose();
+    _youtubePlayerController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if (isYoutubeLink(widget.url)) {
+      // Configuración para enlaces de YouTube
+      _youtubePlayerController = YoutubePlayerController(
+          initialVideoId: YoutubePlayer.convertUrlToId(widget.url)!,
+          flags: YoutubePlayerFlags(
+            autoPlay: true,
+            controlsVisibleAtStart: true,
+            mute: false,
+          ));
+    } else {
+      // Configuración para videos no relacionados con YouTube
+      _videoPlayerController = VideoPlayerController.network(widget.url);
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController!,
+        autoPlay: true,
+        looping: true,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+          child: Center(
+              child: isYoutubeLink(widget.url)
+                  ? YoutubePlayerBuilder(
+                      player: YoutubePlayer(
+                        controller: _youtubePlayerController!,
+                        showVideoProgressIndicator: true,
+                      ),
+                      builder: (context, player) {
+                        return player;
+                      },
+                    )
+                  : Chewie(controller: _chewieController!))),
+    );
   }
 }

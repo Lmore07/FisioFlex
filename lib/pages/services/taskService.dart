@@ -28,3 +28,26 @@ Future<List<Task>> getTaskService() async {
     throw Exception('Error al obtener las tareas: ${error.toString()}');
   }
 }
+
+Future<bool> completeTaskService(int idAssignment) async {
+  final apiBaseUrl = dotenv.env['API_BASE'];
+  Map<String, String> headers = {
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': 'Bearer ${await getString('token')}'
+  };
+
+  try {
+    final response = await http.patch(
+        Uri.parse('${apiBaseUrl!}/assignments/$idAssignment/completed'),
+        headers: headers);
+    if (await response.statusCode >= 200 && await response.statusCode < 300) {
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+}
