@@ -1,9 +1,12 @@
-import 'package:fisioflex/pages/designs/appBar.dart';
-import 'package:fisioflex/pages/designs/cardButton.dart';
+import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
+import 'package:TeraFlex/pages/designs/appBar.dart';
+import 'package:TeraFlex/pages/designs/cardButton.dart';
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:flutter/material.dart';
 
 //global variables
 String username = "";
+UserData? myInformation;
 
 class dashboardClient extends StatefulWidget {
   const dashboardClient({super.key});
@@ -14,6 +17,22 @@ class dashboardClient extends StatefulWidget {
 
 class _dashboardClientState extends State<dashboardClient> {
   @override
+  void initState() {
+    username = "";
+
+    // TODO: implement initState
+    super.initState();
+    getUserInformation('userInformation').then(
+      (value) {
+        username = value!.firstName;
+        setState(() {
+          username = value.firstName;
+        });
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -21,7 +40,7 @@ class _dashboardClientState extends State<dashboardClient> {
         appBar: PreferredSize(
           child: AppBarCustom(
             username: username,
-            subTittle: 'FisioFlex',
+            subTittle: 'TeraFlex',
             tittle: 'Hola,',
           ),
           preferredSize: Size.fromHeight(100),

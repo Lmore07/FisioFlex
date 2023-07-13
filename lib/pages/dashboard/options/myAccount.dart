@@ -1,13 +1,16 @@
-import 'package:fisioflex/pages/dashboard/options/detailTask.dart';
-import 'package:fisioflex/pages/designs/appBar.dart';
-import 'package:fisioflex/pages/designs/buttons.dart';
-import 'package:fisioflex/pages/designs/inputs.dart';
-import 'package:fisioflex/pages/interfaces/interfaces.dart';
-import 'package:fisioflex/pages/services/myInfo.dart';
+import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
+import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
+import 'package:TeraFlex/pages/designs/appBar.dart';
+import 'package:TeraFlex/pages/designs/buttons.dart';
+import 'package:TeraFlex/pages/designs/inputs.dart';
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/services/myInfoService.dart';
 import 'package:flutter/material.dart';
+import 'package:restart_app/restart_app.dart';
 
 //Variables Globales
-MyInformation myInformation = MyInformation();
+UserData? myInformation =
+    UserData(id: 1, firstName: "", lastName: "", docNumber: "");
 
 class myAccount extends StatefulWidget {
   const myAccount({super.key});
@@ -20,7 +23,12 @@ class _myAccountState extends State<myAccount> {
   @override
   void initState() {
     super.initState();
-    loadData();
+    getUserInformation('userInformation').then((value) {
+      myInformation = value;
+      setState(() {
+        myInformation = value;
+      });
+    });
   }
 
   @override
@@ -44,21 +52,17 @@ class _myAccountState extends State<myAccount> {
             SizedBox(height: 25),
             ImageProfile(),
             SizedBox(height: 25),
-            inputProfile('Nombrees', 'Nombres', lines: 1),
-            inputProfile('1234567890', 'Cédula', lines: 1),
-            inputProfile('0994625454', 'Teléfono', lines: 1),
-            inputProfile('asdasd', 'Descripción', lines: 5),
+            inputProfile(
+                "${myInformation?.firstName} ${myInformation?.lastName}",
+                'Nombres',
+                lines: 1),
+            inputProfile(myInformation?.docNumber, 'Cédula', lines: 1),
+            if (myInformation?.phone != null)
+              inputProfile(myInformation?.phone, 'Teléfono', lines: 1),
+            if (myInformation?.description != null)
+              inputProfile(myInformation?.description, 'Descripción', lines: 5),
             SizedBox(height: 10),
-            Container(
-              padding: EdgeInsetsDirectional.only(start: 20, end: 20),
-              child: buttonVoice(
-                onPressed: () {
-                  textToSpeech.speak(
-                      "Datos de tu perfil, Tus nombres ${myInformation.names}, Tu cédula ${myInformation.identification}, Tu numero de teléfono ${myInformation.phone}, una pequeña descripción de ti ${myInformation.description}");
-                },
-                label: 'Dictar por voz',
-              ),
-            ),
+            actionsButtons(),
             SizedBox(height: 25),
           ],
         ))),
@@ -66,7 +70,7 @@ class _myAccountState extends State<myAccount> {
     );
   }
 
-  Container inputProfile(String value, label, {int? lines}) {
+  Container inputProfile(String? value, label, {int? lines}) {
     return Container(
       padding: EdgeInsetsDirectional.only(start: 20, end: 20),
       child: Column(
@@ -74,7 +78,7 @@ class _myAccountState extends State<myAccount> {
         children: [
           labelInputs(label),
           SizedBox(height: 5),
-          InputWidgetProfile(label: value, maxLines: lines),
+          InputWidgetProfile(label: value!, maxLines: lines),
         ],
       ),
     );
@@ -93,6 +97,36 @@ class _myAccountState extends State<myAccount> {
   }
 }
 
+class actionsButtons extends StatelessWidget {
+  const actionsButtons({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsetsDirectional.only(start: 20, end: 20),
+      child: Column(
+        children: [
+          buttonTest(
+            onPressed: () {
+              textToSpeech.speak(
+                  'Hola, tu nombre es: ${myInformation?.firstName} ${myInformation?.lastName}, tu número de cédula es: ${myInformation?.docNumber}');
+            },
+          ),
+          SizedBox(height: 15),
+          buttonLogOut(
+            onPressed: () {
+              clear();
+              Navigator.popUntil(context, ModalRoute.withName('login'));
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
+
 class ImageProfile extends StatelessWidget {
   const ImageProfile({
     super.key,
@@ -103,17 +137,11 @@ class ImageProfile extends StatelessWidget {
     return Container(
       padding: EdgeInsetsDirectional.only(start: 100, end: 100),
       child: Column(children: [
-        if (myInformation.image != null) Image.network(''),
-        if (myInformation.names == null)
-          Image(
-            image: AssetImage('assets/images/avatar_logo.png'),
-            fit: BoxFit.cover,
-          )
+        Image(
+          image: AssetImage('assets/images/avatar_logo.png'),
+          fit: BoxFit.cover,
+        )
       ]),
     );
   }
-}
-
-Future<void> loadData() async {
-  myInformation = await myInfoService();
 }

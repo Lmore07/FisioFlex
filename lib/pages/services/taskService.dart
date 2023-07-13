@@ -1,10 +1,13 @@
-import 'package:fisioflex/pages/classes/sharedPreferences.dart';
-import 'package:fisioflex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 Future<List<Task>> getTaskService() async {
+  initializeDateFormatting('es');
   final apiBaseUrl = dotenv.env['API_BASE'];
   Map<String, String> headers = {
     'Content-Type': 'application/json; charset=UTF-8',

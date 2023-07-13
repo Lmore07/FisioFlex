@@ -1,8 +1,8 @@
-import 'package:fisioflex/pages/classes/alerts.dart';
-import 'package:fisioflex/pages/designs/appBar.dart';
-import 'package:fisioflex/pages/designs/cardButton.dart';
-import 'package:fisioflex/pages/interfaces/interfaces.dart';
-import 'package:fisioflex/pages/services/taskService.dart';
+import 'package:TeraFlex/pages/classes/alerts.dart';
+import 'package:TeraFlex/pages/designs/appBar.dart';
+import 'package:TeraFlex/pages/designs/cardButton.dart';
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/services/taskService.dart';
 import 'package:flutter/material.dart';
 
 bool selected = true;
@@ -22,6 +22,7 @@ class _tasksListState extends State<tasksList> {
     // TODO: implement initState
     super.initState();
     CustomEasyLoading.instance.showLoading('Cargando tareas...');
+    listTasks.clear();
     getTaskService().then((value) {
       CustomEasyLoading.instance.dismiss();
       if (value == null) {
@@ -135,8 +136,6 @@ class taskList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime date = now.toUtc();
-
     return Expanded(
       child: SingleChildScrollView(
         child: Container(
@@ -149,8 +148,7 @@ class taskList extends StatelessWidget {
                   cardButtonTaskWidget(
                       icon: Icons.format_list_bulleted_rounded,
                       tittle: task.task.title,
-                      subtitle:
-                          'Tiempo estimado para la actividad ${task.estimatedTime} minutos',
+                      subtitle: ' ${task.estimatedTime} minutos',
                       onPressed: () {
                         Navigator.pushNamed(context, 'detail-task', arguments: {
                           'idTask': task.task.id,

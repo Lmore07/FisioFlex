@@ -1,10 +1,10 @@
-import 'package:fisioflex/pages/classes/alerts.dart';
-import 'package:fisioflex/pages/classes/textToSpeech.dart';
-import 'package:fisioflex/pages/designs/appBar.dart';
-import 'package:fisioflex/pages/designs/buttons.dart';
-import 'package:fisioflex/pages/designs/txtParraph.dart';
-import 'package:fisioflex/pages/classes/videoPlayer.dart';
-import 'package:fisioflex/pages/services/taskService.dart';
+import 'package:TeraFlex/pages/classes/alerts.dart';
+import 'package:TeraFlex/pages/classes/textToSpeech.dart';
+import 'package:TeraFlex/pages/designs/appBar.dart';
+import 'package:TeraFlex/pages/designs/buttons.dart';
+import 'package:TeraFlex/pages/designs/txtParraph.dart';
+import 'package:TeraFlex/pages/classes/videoPlayer.dart';
+import 'package:TeraFlex/pages/services/taskService.dart';
 import 'package:flutter/material.dart';
 
 //Variables globales

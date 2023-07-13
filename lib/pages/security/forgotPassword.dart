@@ -1,9 +1,9 @@
-import 'package:fisioflex/pages/designs/background.dart';
-import 'package:fisioflex/pages/designs/buttons.dart';
-import 'package:fisioflex/pages/designs/inputs.dart';
-import 'package:fisioflex/pages/designs/txtTitle.dart';
-import 'package:fisioflex/pages/security/login.dart';
-import 'package:fisioflex/pages/security/recoveryPassword.dart';
+import 'package:TeraFlex/pages/designs/background.dart';
+import 'package:TeraFlex/pages/designs/buttons.dart';
+import 'package:TeraFlex/pages/designs/inputs.dart';
+import 'package:TeraFlex/pages/designs/txtTitle.dart';
+import 'package:TeraFlex/pages/security/login.dart';
+import 'package:TeraFlex/pages/security/recoveryPassword.dart';
 import 'package:flutter/material.dart';
 
 //VARIABLES GLOBALES

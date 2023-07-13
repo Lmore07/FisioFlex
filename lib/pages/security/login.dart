@@ -1,14 +1,15 @@
-import 'package:fisioflex/pages/classes/alerts.dart';
-import 'package:fisioflex/pages/dashboard/dashboard.dart';
-import 'package:fisioflex/pages/designs/background.dart';
-import 'package:fisioflex/pages/designs/buttons.dart';
-import 'package:fisioflex/pages/designs/inputs.dart';
-import 'package:fisioflex/pages/designs/txtTitle.dart';
-import 'package:fisioflex/pages/interfaces/interfaces.dart';
-import 'package:fisioflex/pages/services/loginService.dart';
+import 'package:TeraFlex/pages/classes/alerts.dart';
+import 'package:TeraFlex/pages/dashboard/dashboard.dart';
+import 'package:TeraFlex/pages/designs/background.dart';
+import 'package:TeraFlex/pages/designs/buttons.dart';
+import 'package:TeraFlex/pages/designs/inputs.dart';
+import 'package:TeraFlex/pages/designs/txtTitle.dart';
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/services/loginService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter/services.dart';
 
 //VARIABLES GLOBALES
 bool _isKeyboardOpen = false;
@@ -28,7 +29,12 @@ class _LoginState extends State<Login> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(body: createLogin()),
+      child: WillPopScope(
+          onWillPop: () async {
+            SystemNavigator.pop();
+            return true;
+          },
+          child: Scaffold(body: createLogin())),
     );
   }
 
@@ -91,6 +97,7 @@ class LoginForm extends StatelessWidget {
                 value: (value) => {_userInput = value},
                 keyboardType: TextInputType.number),
             InputWidget(
+                visible: true,
                 enable: true,
                 label: 'Contraseña',
                 hint: 'Ingresa tu contraseña',
@@ -101,7 +108,6 @@ class LoginForm extends StatelessWidget {
                 onPressed: () {
                   login(context);
                 }),
-            SizedBox(height: 9),
             SizedBox(height: 40),
             btnForgotPassword()
           ],
@@ -120,8 +126,9 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         alignment: AlignmentDirectional.topCenter,
+        padding: EdgeInsets.only(top: _top * 50),
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 150),
+          duration: Duration(milliseconds: 100),
           height: _imageSize,
           child: Image.asset("assets/images/logo.png", width: _imageSize),
         ));

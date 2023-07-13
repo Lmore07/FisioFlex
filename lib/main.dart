@@ -1,21 +1,21 @@
-import 'package:fisioflex/pages/dashboard/dashboard.dart';
-import 'package:fisioflex/pages/dashboard/options/detailTask.dart';
-import 'package:fisioflex/pages/dashboard/options/help.dart';
-import 'package:fisioflex/pages/dashboard/options/myAccount.dart';
-import 'package:fisioflex/pages/dashboard/options/tasks.dart';
-import 'package:fisioflex/pages/security/forgotPassword.dart';
-import 'package:fisioflex/pages/security/login.dart';
-import 'package:fisioflex/pages/security/recoveryPassword.dart';
+import 'package:TeraFlex/pages/dashboard/dashboard.dart';
+import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
+import 'package:TeraFlex/pages/dashboard/options/help.dart';
+import 'package:TeraFlex/pages/dashboard/options/myAccount.dart';
+import 'package:TeraFlex/pages/dashboard/options/tasks.dart';
+import 'package:TeraFlex/pages/security/forgotPassword.dart';
+import 'package:TeraFlex/pages/security/login.dart';
+import 'package:TeraFlex/pages/security/recoveryPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:fisioflex/pages/classes/sharedPreferences.dart';
+import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 String? savedResponse;
 
 Future<void> main() async {
   await dotenv.load(); // Carga las variables de entorno desde el archivo .env
-  //await removeData('token');
+  await removeData('token');
   savedResponse = await getString('token');
   runApp(const MyApp());
 }
@@ -28,12 +28,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'FisioFlex',
+      title: 'TeraFlex',
       theme: ThemeData(
         colorScheme:
             ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 6, 75, 170)),
         useMaterial3: true,
       ),
+      
       builder: EasyLoading.init(),
       initialRoute: (savedResponse == null) ? 'login' : 'dashboard',
       routes: {

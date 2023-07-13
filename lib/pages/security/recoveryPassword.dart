@@ -1,7 +1,7 @@
-import 'package:fisioflex/pages/designs/background.dart';
-import 'package:fisioflex/pages/designs/buttons.dart';
-import 'package:fisioflex/pages/designs/txtParraph.dart';
-import 'package:fisioflex/pages/security/forgotPassword.dart';
+import 'package:TeraFlex/pages/designs/background.dart';
+import 'package:TeraFlex/pages/designs/buttons.dart';
+import 'package:TeraFlex/pages/designs/txtParraph.dart';
+import 'package:TeraFlex/pages/security/forgotPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -95,13 +95,10 @@ class recoveryForm extends StatelessWidget {
               label: 'Olvidé la contraseña',
             ),
             SizedBox(height: 15),
-            buttonVoice(
-                label: 'Dictar por voz',
-                onPressed: () {
-                  textToSpeech.speak(
-                      '¿Olvidó su contraseña?, No hay problema, ' +
-                          _txtInformation);
-                }),
+            buttonTest(onPressed: () {
+              textToSpeech.speak('¿Olvidó su contraseña?, No hay problema, ' +
+                  _txtInformation);
+            }),
             SizedBox(height: 20),
             txtParraph(label: _txtInformation),
             SizedBox(height: 20),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Guardar un objeto JSON
@@ -6,6 +7,22 @@ Future<void> saveJson(String key, Map<String, dynamic> json) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String jsonString = jsonEncode(json);
   await prefs.setString(key, jsonString);
+}
+
+Future<void> clear() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.clear();
+}
+
+// Guardar un objeto JSON
+Future<UserData?> getUserInformation(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? jsonString = prefs.getString(key);
+  if (jsonString != null) {
+    Map<String, dynamic> jsonData = jsonDecode(jsonString);
+    UserData userResponse = UserData.fromJson(jsonData);
+    return userResponse;
+  }
 }
 
 // Guardar un string

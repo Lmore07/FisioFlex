@@ -1,8 +1,53 @@
+import 'package:intl/intl.dart';
+
 class Credentials {
   final String user;
   final String password;
 
   Credentials({required this.user, required this.password});
+}
+
+class GeneralResponse<T> {
+  final T? data;
+  final String? message;
+
+  GeneralResponse({this.data, this.message});
+}
+
+class UserData {
+  final int id;
+  final String firstName;
+  final String lastName;
+  final String docNumber;
+  final String? phone;
+  final String? description;
+  final String? birthDate;
+
+  UserData(
+      {required this.id,
+      required this.firstName,
+      required this.lastName,
+      this.phone,
+      this.description,
+      this.birthDate,
+      required this.docNumber});
+
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return UserData(
+      firstName: json['firstName'],
+      lastName: json['lastName'],
+      docNumber: json['docNumber'],
+      phone: json['phone'],
+      description: json['description'],
+      birthDate: json['birthDate'],
+      id: json['id'],
+    );
+  }
+}
+
+class UserResponse extends GeneralResponse<UserData> {
+  UserResponse({UserData? data, String? message})
+      : super(data: data, message: message);
 }
 
 class LoginInformation {
@@ -29,37 +74,12 @@ class LoginInformation {
   }
 }
 
-class MyInformation {
-  final String? names;
-  final String? image;
-  final String? identification;
-  final String? phone;
-  final String? description;
-
-  MyInformation(
-      {this.names,
-      this.image,
-      this.identification,
-      this.phone,
-      this.description});
-  factory MyInformation.fromJson(Map<String, dynamic> json) {
-    return MyInformation(
-      names: json['names'],
-      image: json['image'],
-      identification: json['identification'],
-      phone: json['phone'],
-      description: json['description'],
-    );
-  }
-}
-
 class Task {
   int id;
   TaskDetail task;
   int estimatedTime;
   DateTime createdAt;
   DateTime dueDate;
-
   Task({
     required this.id,
     required this.task,
@@ -70,12 +90,14 @@ class Task {
 
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
-      id: json['id'],
-      task: TaskDetail.fromJson(json['task']),
-      estimatedTime: json['estimatedTime'],
-      createdAt: DateTime.parse(json['createdAt']),
-      dueDate: DateTime.parse(json['dueDate']),
-    );
+        id: json['id'],
+        task: TaskDetail.fromJson(json['task']),
+        estimatedTime: json['estimatedTime'],
+        createdAt: //DateTime.now(),
+            DateFormat('EEEE, MMMM d y, H:mm:ss', 'es')
+                .parse(json['createdAt']),
+        dueDate: //DateTime.now());
+            DateFormat('EEEE, MMMM d y, H:mm:ss', 'es').parse(json['dueDate']));
   }
 }
 
@@ -95,4 +117,3 @@ class TaskDetail {
     );
   }
 }
-

@@ -78,6 +78,7 @@ class cardButtonTaskWidget extends StatelessWidget {
             color: Color.fromRGBO(248, 184, 48, 1),
             borderRadius: BorderRadius.circular(15)),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Column(
               children: [
@@ -90,9 +91,11 @@ class cardButtonTaskWidget extends StatelessWidget {
             ),
             SizedBox(width: 20),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  constraints: BoxConstraints(maxWidth: 200),
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width - 160),
                   child: Wrap(
                     children: [
                       Text(tittle,
@@ -103,12 +106,19 @@ class cardButtonTaskWidget extends StatelessWidget {
                     ],
                   ),
                 ),
+                SizedBox(height: 10),
                 if (subtitle != null)
                   Container(
-                    constraints: BoxConstraints(maxWidth: 200),
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width - 160),
                     child: Wrap(children: [
+                      Icon(
+                        Icons.access_time_filled_sharp,
+                        color: Colors.white,
+                      ),
                       Text(
                         subtitle!,
+                        textAlign: TextAlign.left,
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,

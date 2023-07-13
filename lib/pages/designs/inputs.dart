@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class InputWidget extends StatelessWidget {
   final String label;
   final bool enable;
+  final bool? visible;
   final String? hint;
   final Function(String)? value;
   final TextInputType keyboardType;
 
   const InputWidget(
       {super.key,
+      this.visible,
       required this.label,
       this.hint,
       required this.enable,
@@ -21,6 +23,7 @@ class InputWidget extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 20),
       child: TextField(
         enabled: enable,
+        obscureText: visible ?? false,
         keyboardType: keyboardType,
         onChanged: value,
         decoration: InputDecoration(
