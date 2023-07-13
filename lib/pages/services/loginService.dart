@@ -22,8 +22,8 @@ Future<String> loginService(Credentials credentials) async {
   try {
     final response = await http.post(Uri.parse('${apiBaseUrl!}/auth/login'),
         body: body, headers: headers);
+    Map<String, dynamic> jsonResponse = jsonDecode(response.body);
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       await saveString('token', jsonResponse['token']);
       LoginInformation decoded = decodificarToken(jsonResponse['token']);
       await saveString('idUser', decoded.id.toString());
@@ -34,8 +34,7 @@ Future<String> loginService(Credentials credentials) async {
       await myInfoService();
       return 'OK';
     } else {
-      print('${response.statusCode} ${response.reasonPhrase}');
-      return 'ERROR_INFO';
+      return jsonResponse['message'];
     }
   } catch (error) {
     return error.toString();

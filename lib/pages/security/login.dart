@@ -186,11 +186,6 @@ void login(BuildContext context) {
         CustomEasyLoading.instance.showSuccess('Bienvenido');
         Navigator.pushNamed(context, 'dashboard');
         break;
-      case 'ERROR_INFO':
-        CustomEasyLoading.instance.dismiss();
-        CustomEasyLoading.instance
-            .showError('Usuario o contraseña incorrectos');
-        break;
       default:
         CustomEasyLoading.instance.dismiss();
         CustomEasyLoading.instance.showError(loggedIn);
