@@ -15,7 +15,7 @@ String? savedResponse;
 
 Future<void> main() async {
   await dotenv.load(); // Carga las variables de entorno desde el archivo .env
-  await removeData('token');
+  //await removeData('token');
   savedResponse = await getString('token');
   runApp(const MyApp());
 }
