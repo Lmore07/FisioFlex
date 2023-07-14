@@ -1,12 +1,11 @@
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/cardButton.dart';
-import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:flutter/material.dart';
 
 //global variables
 String username = "";
-UserData? myInformation;
 
 class dashboardClient extends StatefulWidget {
   const dashboardClient({super.key});
@@ -36,7 +35,7 @@ class _dashboardClientState extends State<dashboardClient> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromRGBO(156, 211, 221, 1),
+        backgroundColor: backgroundColor,
         appBar: PreferredSize(
           child: AppBarCustom(
             username: username,
@@ -56,52 +55,34 @@ class _dashboardClientState extends State<dashboardClient> {
                         icon: Icons.format_list_bulleted_rounded,
                         tittle: 'Tareas',
                         onPressed: () {
-                          print('Tareas presionado');
                           redirectToTasksList(context);
                         }),
-                    SizedBox(height: 25),
+                    spaced(25, 0),
                     cardButtonWidget(
                         icon: Icons.notifications_sharp,
                         tittle: 'Notificaciones',
-                        onPressed: () {
-                          print('Notificaciones presionado');
-                        }),
-                    SizedBox(height: 25),
+                        onPressed: () {}),
+                    spaced(25, 0),
                     cardButtonWidget(
                         icon: Icons.person_3_sharp,
                         tittle: 'Mi perfil',
                         onPressed: () {
                           redirectToAccount(context);
-                          print('Mi perfil presionado');
                         }),
-                    SizedBox(height: 25),
+                    spaced(25, 0),
                     cardButtonWidget(
                         icon: Icons.help_sharp,
                         tittle: 'Ayuda',
                         onPressed: () {
                           redirectToHelp(context);
-                          print('Ayuda presionado');
                         }),
-                    SizedBox(height: 25),
+                    spaced(25, 0),
                   ]),
             ),
           ),
         ),
       ),
     );
-  }
-}
-
-class Logo extends StatelessWidget {
-  const Logo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        alignment: AlignmentDirectional.topCenter,
-        child: Image.asset("assets/images/logo.png"));
   }
 }
 

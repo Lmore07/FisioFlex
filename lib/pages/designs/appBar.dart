@@ -1,3 +1,4 @@
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:flutter/material.dart';
 
 class AppBarCustom extends StatelessWidget {
@@ -19,7 +20,7 @@ class AppBarCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color.fromRGBO(0, 123, 189, 1),
+      backgroundColor: backgroundColorHeader,
       toolbarHeight: 100,
       automaticallyImplyLeading: false,
       flexibleSpace: Row(
@@ -51,17 +52,9 @@ class AppBarCustom extends StatelessWidget {
                 Row(
                   children: [
                     if (username != null)
-                      Text(tittle + ' ' + username!,
-                          style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white)),
+                      Text('$tittle ${username!}', style: textStyleTitleHeader),
                     if (username == null)
-                      Text(tittle,
-                          style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white)),
+                      Text(tittle, style: textStyleTitleHeader),
                   ],
                 )
               ],

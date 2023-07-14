@@ -1,16 +1,24 @@
 import 'package:TeraFlex/pages/classes/alerts.dart';
+import 'package:TeraFlex/pages/classes/messages.dart';
+import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:TeraFlex/pages/classes/textToSpeech.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/txtParraph.dart';
 import 'package:TeraFlex/pages/classes/videoPlayer.dart';
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:TeraFlex/pages/services/taskService.dart';
 import 'package:flutter/material.dart';
 
 //Variables globales
 late int idTask;
+late int timeExpected;
 late String title;
+late String description;
 late int idAssigment;
+UserData? myInformation =
+    UserData(id: 1, firstName: "", lastName: "", docNumber: "");
 TextToSpeech textToSpeech = TextToSpeech();
 late VideoPlayerScreen _videoPlayerScreen;
 
@@ -23,38 +31,47 @@ class detailTask extends StatefulWidget {
 
 class _detailTaskState extends State<detailTask> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserInformation('userInformation').then((value) {
+      myInformation = value;
+      setState(() {
+        myInformation = value;
+      });
+    });
+    _videoPlayerScreen =
+        VideoPlayerScreen(url: 'https://www.youtube.com/watch?v=1Nr_tqkMsJs');
+  }
+
+  @override
   Widget build(BuildContext context) {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     idAssigment = arguments['idAssigment'];
     idTask = arguments['idTask'];
     title = arguments['title'];
+    description = arguments['description'];
+    timeExpected = arguments['time'];
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromRGBO(156, 211, 221, 1),
+        backgroundColor: backgroundColor,
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(100),
+            preferredSize: const Size.fromHeight(100),
             child: AppBarCustom(
               tittle: 'Detalle de tarea',
               subTittle: 'Atrás',
               onPressed: () {
+                textToSpeech.stop();
                 Navigator.pushNamed(context, 'tasks-list');
               },
               icon: Icons.arrow_back_rounded,
             )),
-        body: SingleChildScrollView(
+        body: const SingleChildScrollView(
           child: detailTaskWidget(),
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _videoPlayerScreen =
-        VideoPlayerScreen(url: 'https://www.youtube.com/watch?v=1Nr_tqkMsJs');
   }
 }
 
@@ -66,7 +83,7 @@ class detailTaskWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsetsDirectional.all(20),
+        padding: const EdgeInsetsDirectional.all(20),
         child: Column(
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -76,28 +93,31 @@ class detailTaskWidget extends StatelessWidget {
                 child: Wrap(children: [
                   Text(
                     title,
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+                    style: textStyleTittle,
                   ),
                 ]),
               ),
               buttonVoiceIcon(onPressed: () {
-                textToSpeech.speak('Probando detalle');
+                textToSpeech.speak(getMessageVoice(myInformation?.firstName,
+                    title, description, timeExpected));
               }),
             ]),
-            txtParraph(label: 'label'),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: txtParraph(label: description),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   'Video explicativo',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+                  style: textStyleTittle,
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            spaced(20, 0),
             _videoPlayerScreen,
-            SizedBox(height: 20),
+            spaced(20, 0),
             buttonFinish(
                 label: 'Finalizar tarea',
                 onPressed: () {
@@ -109,19 +129,21 @@ class detailTaskWidget extends StatelessWidget {
 }
 
 void completeTask(BuildContext context) {
+  CustomEasyLoading.instance.showLoading('Completando tarea...');
   completeTaskService(idAssigment).then((value) =>
       {if (value) completedTrue(context) else completedFalse(context)});
 }
 
 void completedTrue(BuildContext context) async {
+  CustomEasyLoading.instance.dismiss();
   CustomEasyLoading.instance.showSuccess('Se ha completado su tarea');
-  // Esperar un segundo
   await Future.delayed(Duration(milliseconds: 1500));
   _videoPlayerScreen.dispose();
-  // Redireccionar a la ruta 'tasks-list'
+  textToSpeech.stop();
   Navigator.pushNamed(context, 'tasks-list');
 }
 
 void completedFalse(BuildContext context) {
+  CustomEasyLoading.instance.dismiss();
   CustomEasyLoading.instance.showError('No se ha completado su tarea');
 }

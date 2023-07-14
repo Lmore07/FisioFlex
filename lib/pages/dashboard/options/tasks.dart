@@ -1,4 +1,5 @@
 import 'package:TeraFlex/pages/classes/alerts.dart';
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/cardButton.dart';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
@@ -19,14 +20,13 @@ class tasksList extends StatefulWidget {
 class _tasksListState extends State<tasksList> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     CustomEasyLoading.instance.showLoading('Cargando tareas...');
     listTasks.clear();
     getTaskService().then((value) {
       CustomEasyLoading.instance.dismiss();
-      if (value == null) {
-        CustomEasyLoading.instance.showMessage('No hay tareas');
+      if (value.isEmpty) {
+        CustomEasyLoading.instance.showMessage('No tiene tareas asignadas');
       }
       setState(() {
         listTasks = value;
@@ -49,18 +49,19 @@ class _tasksListState extends State<tasksList> {
       child: WillPopScope(
         onWillPop: () async {
           listTasks.clear();
-          Navigator.pushNamed(context, 'dashboard');
+          Navigator.restorablePushReplacementNamed(context, 'dashboard');
           return true;
         },
         child: Scaffold(
-          backgroundColor: Color.fromRGBO(156, 211, 221, 1),
+          backgroundColor: backgroundColor,
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(100),
               child: AppBarCustom(
                 tittle: 'Tareas',
                 subTittle: 'Atrás',
                 onPressed: () {
-                  Navigator.pushNamed(context, 'dashboard');
+                  Navigator.restorablePushReplacementNamed(
+                      context, 'dashboard');
                 },
                 icon: Icons.arrow_back_rounded,
               )),
@@ -92,7 +93,6 @@ class _tasksListState extends State<tasksList> {
                   onChanged: (value) {
                     setState(() {
                       selected = value!;
-                      print(selected);
                     });
                   },
                   value: selected,
@@ -117,9 +117,7 @@ class _tasksListState extends State<tasksList> {
                   underline: Container(),
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+              spaced(25, 0),
               taskList()
             ]),
           ),
@@ -153,12 +151,12 @@ class taskList extends StatelessWidget {
                         Navigator.pushNamed(context, 'detail-task', arguments: {
                           'idTask': task.task.id,
                           'title': task.task.title,
-                          'idAssigment': task.id
+                          'idAssigment': task.id,
+                          'description': task.task.description,
+                          'time': task.estimatedTime
                         });
                       }),
-              SizedBox(
-                height: 20,
-              ),
+              spaced(25, 0)
             ],
           ),
         ),

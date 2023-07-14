@@ -1,3 +1,4 @@
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:flutter/material.dart';
 
 class cardButtonWidget extends StatelessWidget {
@@ -75,8 +76,7 @@ class cardButtonTaskWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsetsDirectional.all(20),
         decoration: BoxDecoration(
-            color: Color.fromRGBO(248, 184, 48, 1),
-            borderRadius: BorderRadius.circular(15)),
+            color: cardColor, borderRadius: BorderRadius.circular(15)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -89,7 +89,7 @@ class cardButtonTaskWidget extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(width: 20),
+            spaced(0, 25),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -97,16 +97,10 @@ class cardButtonTaskWidget extends StatelessWidget {
                   constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width - 160),
                   child: Wrap(
-                    children: [
-                      Text(tittle,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400))
-                    ],
+                    children: [Text(tittle, style: textTitleStyleCard)],
                   ),
                 ),
-                SizedBox(height: 10),
+                spaced(10, 0),
                 if (subtitle != null)
                   Container(
                     constraints: BoxConstraints(
@@ -119,10 +113,7 @@ class cardButtonTaskWidget extends StatelessWidget {
                       Text(
                         subtitle!,
                         textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w300),
+                        style: textSubtitleStyleCard,
                       ),
                     ]),
                   )

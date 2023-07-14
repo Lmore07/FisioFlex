@@ -75,13 +75,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               controlsVisibleAtStart: true,
               mute: false,
             ));
-      } else if (Platform.isLinux || Platform.isWindows) {
-        _desktopYoutubePlayerController =
-            desktop_youtube.YoutubePlayerController.fromVideoId(
-                videoId: getYouTubeVideoId(widget.url),
-                autoPlay: true,
-                params: desktop_youtube.YoutubePlayerParams(
-                    showFullscreenButton: true));
       }
     } else {
       // Configuración para videos no relacionados con YouTube
@@ -112,15 +105,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 return player;
               },
             )
-          else if ((Platform.isWindows || Platform.isLinux) &&
-              isYoutubeLink(widget.url))
-            desktop_youtube.YoutubePlayerControllerProvider(
-              controller: _desktopYoutubePlayerController!,
-              child: desktop_youtube.YoutubePlayer(
-                controller: _desktopYoutubePlayerController!,
-              ),
-            )
-          else
+          else if ((Platform.isAndroid || Platform.isIOS) &&
+              !isYoutubeLink(widget.url))
             Chewie(controller: _chewieController!)
         ],
       ))),

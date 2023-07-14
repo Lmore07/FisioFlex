@@ -1,12 +1,11 @@
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/inputs.dart';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
-import 'package:TeraFlex/pages/services/myInfoService.dart';
 import 'package:flutter/material.dart';
-import 'package:restart_app/restart_app.dart';
 
 //Variables Globales
 UserData? myInformation =
@@ -35,7 +34,7 @@ class _myAccountState extends State<myAccount> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromRGBO(156, 211, 221, 1),
+        backgroundColor: backgroundColor,
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(100),
             child: AppBarCustom(
@@ -49,9 +48,9 @@ class _myAccountState extends State<myAccount> {
             child: Container(
                 child: Column(
           children: [
-            SizedBox(height: 25),
+            spaced(25, 0),
             ImageProfile(),
-            SizedBox(height: 25),
+            spaced(25, 0),
             inputProfile(
                 "${myInformation?.firstName} ${myInformation?.lastName}",
                 'Nombres',
@@ -61,9 +60,9 @@ class _myAccountState extends State<myAccount> {
               inputProfile(myInformation?.phone, 'Teléfono', lines: 1),
             if (myInformation?.description != null)
               inputProfile(myInformation?.description, 'Descripción', lines: 5),
-            SizedBox(height: 10),
+            spaced(25, 0),
             actionsButtons(),
-            SizedBox(height: 25),
+            spaced(25, 0)
           ],
         ))),
       ),
@@ -77,7 +76,7 @@ class _myAccountState extends State<myAccount> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           labelInputs(label),
-          SizedBox(height: 5),
+          spaced(5, 0),
           InputWidgetProfile(label: value!, maxLines: lines),
         ],
       ),
@@ -85,15 +84,7 @@ class _myAccountState extends State<myAccount> {
   }
 
   Text labelInputs(String label) {
-    return Text(
-      label,
-      textAlign: TextAlign.end,
-      style: TextStyle(
-          fontSize: 18,
-          fontFamily: 'Nunito',
-          color: Color(0xFF2F2F2F),
-          fontWeight: FontWeight.w400),
-    );
+    return Text(label, textAlign: TextAlign.end, style: textStyleLabels);
   }
 }
 
@@ -114,7 +105,7 @@ class actionsButtons extends StatelessWidget {
                   'Hola, tu nombre es: ${myInformation?.firstName} ${myInformation?.lastName}, tu número de cédula es: ${myInformation?.docNumber}');
             },
           ),
-          SizedBox(height: 15),
+          spaced(15, 0),
           buttonLogOut(
             onPressed: () {
               clear();

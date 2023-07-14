@@ -93,27 +93,22 @@ class Task {
         id: json['id'],
         task: TaskDetail.fromJson(json['task']),
         estimatedTime: json['estimatedTime'],
-        createdAt: //DateTime.now(),
-            DateFormat('EEEE, MMMM d y, H:mm:ss', 'es')
-                .parse(json['createdAt']),
-        dueDate: //DateTime.now());
-            DateFormat('EEEE, MMMM d y, H:mm:ss', 'es').parse(json['dueDate']));
+        createdAt: DateFormat('EEEE, MMMM d y, H:mm:ss', 'es')
+            .parse(json['createdAt']),
+        dueDate: DateFormat('y-M-d').parse(json['dueDate']));
   }
 }
 
 class TaskDetail {
   int id;
   String title;
+  String description;
 
-  TaskDetail({
-    required this.id,
-    required this.title,
-  });
+  TaskDetail(
+      {required this.id, required this.title, required this.description});
 
   factory TaskDetail.fromJson(Map<String, dynamic> json) {
     return TaskDetail(
-      id: json['id'],
-      title: json['title'],
-    );
+        id: json['id'], title: json['title'], description: json['description']);
   }
 }

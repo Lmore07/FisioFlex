@@ -1,3 +1,4 @@
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:flutter/material.dart';
 
 class background extends StatelessWidget {
@@ -29,7 +30,7 @@ class CurvedDesign extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            color: Color.fromRGBO(0, 123, 189, 1),
+            color: backgroundColorHeader,
             height: MediaQuery.of(context).size.height * 1,
           ),
           CustomPaint(
@@ -47,7 +48,7 @@ class CurvedDesign extends StatelessWidget {
 class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Color.fromRGBO(156, 211, 221, 1);
+    Paint paint = Paint()..color = backgroundColor;
     Path path = Path()
       ..moveTo(0, size.height)
       ..lineTo(0, size.height * 0.2)

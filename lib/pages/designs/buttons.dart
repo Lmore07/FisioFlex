@@ -1,3 +1,4 @@
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:flutter/material.dart';
 
 class buttonFill extends StatelessWidget {
@@ -12,19 +13,13 @@ class buttonFill extends StatelessWidget {
         ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            primary: Color.fromRGBO(0, 168, 214, 1),
+            primary: buttonColor,
             minimumSize: Size(double.infinity, 50),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
           child: Text(label,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w600,
-              )),
+              textAlign: TextAlign.center, style: styleButton(Colors.white)),
         )
       ],
     );
@@ -48,20 +43,14 @@ class buttonTransparent extends StatelessWidget {
         ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            primary: Color.fromRGBO(156, 211, 221, 1),
+            primary: backgroundColor,
             minimumSize: Size(double.infinity, 50),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
-                side: BorderSide(color: Color.fromRGBO(0, 168, 214, 1))),
+                side: BorderSide(color: buttonColor)),
           ),
           child: Text(label,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color.fromRGBO(0, 168, 214, 1),
-                fontSize: 16,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w600,
-              )),
+              textAlign: TextAlign.center, style: styleButton(buttonColor)),
         )
       ],
     );
@@ -77,7 +66,7 @@ class buttonVoiceIcon extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        primary: Color.fromRGBO(245, 176, 97, 1),
+        primary: buttonVoiceColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       child: Row(
@@ -98,21 +87,15 @@ class buttonLogOut extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         padding: EdgeInsetsDirectional.symmetric(vertical: 15),
-        primary: Color.fromRGBO(253, 66, 66, 1),
+        primary: buttonLogOutColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'Cerrar Sesión',
-            textAlign: TextAlign.start,
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w400),
-          ),
+          Text('Cerrar Sesión',
+              textAlign: TextAlign.start,
+              style: textStyleButtonFinishAndVoiceAndLogOut(Colors.black)),
           SizedBox(width: 10),
           Icon(Icons.logout_rounded, color: Colors.black),
         ],
@@ -131,7 +114,7 @@ class buttonTest extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         padding: EdgeInsetsDirectional.symmetric(vertical: 15),
-        primary: Color.fromRGBO(245, 176, 97, 1),
+        primary: buttonVoiceColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       child: Row(
@@ -140,11 +123,7 @@ class buttonTest extends StatelessWidget {
           Text(
             'Dictar por voz',
             textAlign: TextAlign.start,
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w400),
+            style: textStyleButtonFinishAndVoiceAndLogOut(Colors.black),
           ),
           SizedBox(width: 10),
           Icon(Icons.record_voice_over_rounded, color: Colors.black),
@@ -171,11 +150,11 @@ class buttonFinish extends StatelessWidget {
         ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            primary: Color.fromRGBO(55, 197, 84, 1),
+            primary: buttonFinishColor,
             minimumSize: Size(double.infinity, 50),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
-                side: BorderSide(color: Color.fromRGBO(55, 197, 84, 1))),
+                side: BorderSide(color: buttonFinishColor)),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -187,12 +166,7 @@ class buttonFinish extends StatelessWidget {
               SizedBox(width: 10),
               Text(label,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400,
-                  )),
+                  style: textStyleButtonFinishAndVoiceAndLogOut(Colors.white)),
             ],
           ),
         )

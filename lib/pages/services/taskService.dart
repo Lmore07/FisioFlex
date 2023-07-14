@@ -17,7 +17,7 @@ Future<List<Task>> getTaskService() async {
   try {
     final response = await http.get(
         Uri.parse(
-            '${apiBaseUrl!}/assignments/${await getString('idUser')}/tasks'),
+            '${apiBaseUrl!}/patients/${await getString('idUser')}/tasks'),
         headers: headers);
     if (await response.statusCode >= 200 && await response.statusCode < 300) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
