@@ -16,8 +16,7 @@ Future<List<Task>> getTaskService() async {
 
   try {
     final response = await http.get(
-        Uri.parse(
-            '${apiBaseUrl!}/patients/${await getString('idUser')}/tasks'),
+        Uri.parse('${apiBaseUrl!}/patients/${await getString('idUser')}/tasks'),
         headers: headers);
     if (await response.statusCode >= 200 && await response.statusCode < 300) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
@@ -41,7 +40,7 @@ Future<bool> completeTaskService(int idAssignment) async {
 
   try {
     final response = await http.patch(
-        Uri.parse('${apiBaseUrl!}/assignments/$idAssignment/completed'),
+        Uri.parse('${apiBaseUrl!}/assigments/$idAssignment/completed'),
         headers: headers);
     if (await response.statusCode >= 200 && await response.statusCode < 300) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
