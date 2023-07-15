@@ -59,13 +59,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   get idVideos => null;
 
   bool isYoutubeLink(String link) {
-    // Verifica si el enlace contiene la estructura típica de un enlace de YouTube
     return link.contains('youtube.com') || link.contains('youtu.be');
   }
 
   bool isNaturalVideo(String link) {
-    final RegExp regExp = RegExp(
-        r'\.(\w+)$'); // Expresión regular para extraer la extensión del archivo
+    final RegExp regExp = RegExp(r'\.(\w+)$');
     final match = regExp.firstMatch(link);
     if (match != null) {
       final extension = match.group(1)?.toLowerCase();
@@ -77,12 +75,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     } else {
       return false;
     }
-  }
-
-  String getYouTubeVideoId(String link) {
-    Uri uri = Uri.parse(link);
-    String videoId = uri.queryParameters['v'] ?? '';
-    return videoId;
   }
 
   dynamic downloadFile() {
@@ -168,15 +160,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         children: [
           if ((Platform.isAndroid || Platform.isIOS) &&
               isYoutubeLink(widget.url[indexVideo]))
-            YoutubePlayerBuilder(
-              player: YoutubePlayer(
-                controller: _youtubePlayerController!,
-                showVideoProgressIndicator: true,
-              ),
-              builder: (context, player) {
-                return player;
-              },
-            )
+            showYoutubeVideo()
           else if ((Platform.isAndroid || Platform.isIOS) &&
               !isNaturalVideo(widget.url[indexVideo]) &&
               !isYoutubeLink(widget.url[indexVideo]))
@@ -190,96 +174,100 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                   controller: _chewieController!,
                 ),
               ),
-          if (widget.url.length > 1)
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (indexVideo > 0)
-                    ElevatedButton(
-                        child: Container(
-                          padding: EdgeInsetsDirectional.all(2),
-                          child: Text("Video Anterior",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            CustomEasyLoading.instance
-                                .showLoading('Cargando video...');
-                            indexVideo--;
-                            if (isYoutubeLink(widget.url[indexVideo])) {
-                              if (_youtubePlayerController == null) {
-                                _youtubePlayerController =
-                                    YoutubePlayerController(
-                                  flags: YoutubePlayerFlags(
-                                    autoPlay: true,
-                                    controlsVisibleAtStart: true,
-                                    mute: false,
-                                  ),
-                                  initialVideoId: YoutubePlayer.convertUrlToId(
-                                      widget.url[indexVideo])!,
-                                );
-                              }
-                              _youtubePlayerController!.load(
-                                  YoutubePlayer.convertUrlToId(
-                                      widget.url[indexVideo])!);
-                            } else if (isNaturalVideo(widget.url[indexVideo])) {
-                              downloadFile();
-                            } else {
-                              videoFile = File('');
-                            }
-                            CustomEasyLoading.instance.dismiss();
-                          });
-                        }),
-                  SizedBox(width: 5),
-                  if (indexVideo < widget.url.length - 1)
-                    ElevatedButton(
-                        child: Container(
-                          child: Text("Video Siguiente",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500)),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            CustomEasyLoading.instance
-                                .showLoading('Cargando video...');
-                            indexVideo++;
-                            if (isYoutubeLink(widget.url[indexVideo])) {
-                              if (_youtubePlayerController == null) {
-                                _youtubePlayerController =
-                                    YoutubePlayerController(
-                                  flags: YoutubePlayerFlags(
-                                    autoPlay: true,
-                                    controlsVisibleAtStart: true,
-                                    mute: false,
-                                  ),
-                                  initialVideoId: YoutubePlayer.convertUrlToId(
-                                      widget.url[indexVideo])!,
-                                );
-                              }
-                              _youtubePlayerController!.load(
-                                  YoutubePlayer.convertUrlToId(
-                                      widget.url[indexVideo])!);
-                              CustomEasyLoading.instance.dismiss();
-                            } else if (isNaturalVideo(widget.url[indexVideo])) {
-                              downloadFile();
-                            } else {
-                              videoFile = File('');
-                            }
-                          });
-                        })
-                ],
-              ),
-            )
+          if (widget.url.length > 1) showButtons()
         ],
       ))),
     );
+  }
+
+  Container showButtons() {
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (indexVideo > 0)
+            ElevatedButton(
+                child: Container(
+                  padding: EdgeInsetsDirectional.all(2),
+                  child: Text("Video Anterior",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500)),
+                ),
+                onPressed: () {
+                  setState(() {
+                    previousButton();
+                  });
+                }),
+          SizedBox(width: 5),
+          if (indexVideo < widget.url.length - 1)
+            ElevatedButton(
+                child: Container(
+                  child: Text("Video Siguiente",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500)),
+                ),
+                onPressed: () {
+                  setState(() {
+                    nextButton();
+                  });
+                })
+        ],
+      ),
+    );
+  }
+
+  void nextButton() {
+    CustomEasyLoading.instance.showLoading('Cargando video...');
+    indexVideo++;
+    if (isYoutubeLink(widget.url[indexVideo])) {
+      if (_youtubePlayerController == null) {
+        _youtubePlayerController = YoutubePlayerController(
+          flags: YoutubePlayerFlags(
+            autoPlay: true,
+            controlsVisibleAtStart: true,
+            mute: false,
+          ),
+          initialVideoId: YoutubePlayer.convertUrlToId(widget.url[indexVideo])!,
+        );
+      }
+      _youtubePlayerController!
+          .load(YoutubePlayer.convertUrlToId(widget.url[indexVideo])!);
+      CustomEasyLoading.instance.dismiss();
+    } else if (isNaturalVideo(widget.url[indexVideo])) {
+      downloadFile();
+    } else {
+      videoFile = File('');
+    }
+    CustomEasyLoading.instance.dismiss();
+  }
+
+  void previousButton() {
+    CustomEasyLoading.instance.showLoading('Cargando video...');
+    indexVideo--;
+    if (isYoutubeLink(widget.url[indexVideo])) {
+      if (_youtubePlayerController == null) {
+        _youtubePlayerController = YoutubePlayerController(
+          flags: YoutubePlayerFlags(
+            autoPlay: true,
+            controlsVisibleAtStart: true,
+            mute: false,
+          ),
+          initialVideoId: YoutubePlayer.convertUrlToId(widget.url[indexVideo])!,
+        );
+      }
+      _youtubePlayerController!
+          .load(YoutubePlayer.convertUrlToId(widget.url[indexVideo])!);
+    } else if (isNaturalVideo(widget.url[indexVideo])) {
+      downloadFile();
+    } else {
+      videoFile = File('');
+    }
+    CustomEasyLoading.instance.dismiss();
   }
 
   Column showImage() {
@@ -291,6 +279,25 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       children: [
         if (videoFile.path != "") Image.file(videoFile),
       ],
+    );
+  }
+}
+
+class showYoutubeVideo extends StatelessWidget {
+  const showYoutubeVideo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return YoutubePlayerBuilder(
+      player: YoutubePlayer(
+        controller: _youtubePlayerController!,
+        showVideoProgressIndicator: true,
+      ),
+      builder: (context, player) {
+        return player;
+      },
     );
   }
 }
