@@ -1,4 +1,3 @@
-import 'package:TeraFlex/pages/classes/videoPlayer.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:flutter/material.dart';
 

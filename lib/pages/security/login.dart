@@ -1,5 +1,4 @@
 import 'package:TeraFlex/pages/classes/alerts.dart';
-import 'package:TeraFlex/pages/dashboard/dashboard.dart';
 import 'package:TeraFlex/pages/designs/background.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/inputs.dart';
@@ -8,8 +7,7 @@ import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:TeraFlex/pages/services/loginService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter/services.dart';
+
 
 //VARIABLES GLOBALES
 bool _isKeyboardOpen = false;

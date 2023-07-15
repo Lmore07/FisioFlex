@@ -48,20 +48,16 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   pin_code_fields: ^7.4.0
   flutter_tts: ^3.7.0
-  dio: ^5.2.1
   flutter_dotenv: ^5.1.0
   http: ^0.13.4
-  fluttertoast: ^8.0.8
   video_player: ^2.2.5
   youtube_player_flutter: ^8.1.2
   shared_preferences: ^2.1.2
   chewie: ^1.6.0+1
   flutter_easyloading: ^3.0.5
   jwt_decode: ^0.3.1
-  youtube_player_iframe: ^4.0.4
   intl: ^0.17.0
   path_provider: ^2.0.15
-  restart_app: ^1.2.1
   flutter_launcher_icons: ^0.13.1
 
 flutter_launcher_icons:

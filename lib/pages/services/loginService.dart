@@ -1,13 +1,10 @@
-import 'package:TeraFlex/pages/classes/alerts.dart';
 import 'package:TeraFlex/pages/classes/decodeJWT.dart';
-import 'package:TeraFlex/pages/classes/messages.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:TeraFlex/pages/services/myInfoService.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter/material.dart';
 
 Future<String> loginService(Credentials credentials) async {
   final apiBaseUrl = dotenv.env['API_BASE'];

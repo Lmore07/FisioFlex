@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 
 Future<Assignment> assignmentDetailService(int idAssignment) async {

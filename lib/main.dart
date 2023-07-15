@@ -14,10 +14,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 String? savedResponse;
 
 Future<void> main() async {
-  await dotenv.load();
-  //await removeData('token');
   WidgetsFlutterBinding
       .ensureInitialized(); // Asegura la inicialización de Flutter
+  await dotenv.load();
+  //await removeData('token');
   savedResponse = await getString('token');
   runApp(const MyApp());
 }

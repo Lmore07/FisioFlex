@@ -1,7 +1,6 @@
 import 'package:TeraFlex/pages/designs/background.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/txtParraph.dart';
-import 'package:TeraFlex/pages/security/forgotPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
