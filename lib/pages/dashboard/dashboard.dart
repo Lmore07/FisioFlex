@@ -3,6 +3,7 @@ import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/cardButton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 //global variables
 String username = "";
@@ -34,50 +35,56 @@ class _dashboardClientState extends State<dashboardClient> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: PreferredSize(
-          child: AppBarCustom(
-            username: username,
-            subTittle: 'TeraFlex',
-            tittle: 'Hola,',
+      child: WillPopScope(
+        onWillPop: () async {
+          SystemNavigator.pop();
+          return false;
+        },
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: PreferredSize(
+            child: AppBarCustom(
+              username: username,
+              subTittle: 'TeraFlex',
+              tittle: 'Hola,',
+            ),
+            preferredSize: Size.fromHeight(100),
           ),
-          preferredSize: Size.fromHeight(100),
-        ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Container(
-              alignment: Alignment.center,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    cardButtonWidget(
-                        icon: Icons.format_list_bulleted_rounded,
-                        tittle: 'Tareas',
-                        onPressed: () {
-                          redirectToTasksList(context);
-                        }),
-                    spaced(25, 0),
-                    cardButtonWidget(
-                        icon: Icons.notifications_sharp,
-                        tittle: 'Notificaciones',
-                        onPressed: () {}),
-                    spaced(25, 0),
-                    cardButtonWidget(
-                        icon: Icons.person_3_sharp,
-                        tittle: 'Mi perfil',
-                        onPressed: () {
-                          redirectToAccount(context);
-                        }),
-                    spaced(25, 0),
-                    cardButtonWidget(
-                        icon: Icons.help_sharp,
-                        tittle: 'Ayuda',
-                        onPressed: () {
-                          redirectToHelp(context);
-                        }),
-                    spaced(25, 0),
-                  ]),
+          body: Center(
+            child: SingleChildScrollView(
+              child: Container(
+                alignment: Alignment.center,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      cardButtonWidget(
+                          icon: Icons.format_list_bulleted_rounded,
+                          tittle: 'Tareas',
+                          onPressed: () {
+                            redirectToTasksList(context);
+                          }),
+                      spaced(25, 0),
+                      cardButtonWidget(
+                          icon: Icons.notifications_sharp,
+                          tittle: 'Notificaciones',
+                          onPressed: () {}),
+                      spaced(25, 0),
+                      cardButtonWidget(
+                          icon: Icons.person_3_sharp,
+                          tittle: 'Mi perfil',
+                          onPressed: () {
+                            redirectToAccount(context);
+                          }),
+                      spaced(25, 0),
+                      cardButtonWidget(
+                          icon: Icons.help_sharp,
+                          tittle: 'Ayuda',
+                          onPressed: () {
+                            redirectToHelp(context);
+                          }),
+                      spaced(25, 0),
+                    ]),
+              ),
             ),
           ),
         ),

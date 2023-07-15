@@ -14,8 +14,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 String? savedResponse;
 
 Future<void> main() async {
-  await dotenv.load(); // Carga las variables de entorno desde el archivo .env
+  await dotenv.load();
   //await removeData('token');
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Asegura la inicialización de Flutter
   savedResponse = await getString('token');
   runApp(const MyApp());
 }
@@ -34,7 +36,6 @@ class MyApp extends StatelessWidget {
             ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 6, 75, 170)),
         useMaterial3: true,
       ),
-      
       builder: EasyLoading.init(),
       initialRoute: (savedResponse == null) ? 'login' : 'dashboard',
       routes: {

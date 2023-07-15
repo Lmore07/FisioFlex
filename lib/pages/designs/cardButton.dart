@@ -89,7 +89,7 @@ class cardButtonTaskWidget extends StatelessWidget {
                 )
               ],
             ),
-            spaced(0, 25),
+            spaced(0, 15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -120,7 +120,9 @@ class cardButtonTaskWidget extends StatelessWidget {
               ],
             ),
           ],
+          
         ),
+        
       ),
     );
   }

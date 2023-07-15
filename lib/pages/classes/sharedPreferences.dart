@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,6 +30,37 @@ Future<UserData?> getUserInformation(String key) async {
 Future<void> saveString(String key, String value) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString(key, value);
+}
+
+// Guardar un string
+Future<void> saveListString(String key, List<dynamic> json) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String jsonString = jsonEncode(json);
+  await prefs.setString(key, jsonString);
+}
+
+Future<List<dynamic>> getListString(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? videoUrlsJson = prefs.getString(key);
+  if (videoUrlsJson != null) {
+    // Convierte la cadena JSON de nuevo a una lista de strings
+    List<dynamic> videoUrlsData = jsonDecode(videoUrlsJson);
+    List<dynamic> videoUrls = videoUrlsData.cast<String>();
+    return videoUrls;
+  }
+  return [];
+}
+
+Future<List<int>> getListInt(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? videoUrlsJson = prefs.getString(key);
+  if (videoUrlsJson != null) {
+    // Convierte la cadena JSON de nuevo a una lista de strings
+    List<dynamic> videoUrlsData = jsonDecode(videoUrlsJson);
+    List<int> videoUrls = videoUrlsData.cast<int>();
+    return videoUrls;
+  }
+  return [];
 }
 
 // Obtener un string

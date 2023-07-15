@@ -8,8 +8,10 @@ import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/txtParraph.dart';
 import 'package:TeraFlex/pages/classes/videoPlayer.dart';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/services/assignmentService.dart';
 import 'package:TeraFlex/pages/services/taskService.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //Variables globales
 late int idTask;
@@ -17,10 +19,11 @@ late int timeExpected;
 late String title;
 late String description;
 late int idAssigment;
+late List<String> videos = [];
 UserData? myInformation =
     UserData(id: 1, firstName: "", lastName: "", docNumber: "");
 TextToSpeech textToSpeech = TextToSpeech();
-late VideoPlayerScreen _videoPlayerScreen;
+late VideoPlayerScreen _videoPlayerScreen = VideoPlayerScreen();
 
 class detailTask extends StatefulWidget {
   const detailTask({super.key});
@@ -40,8 +43,6 @@ class _detailTaskState extends State<detailTask> {
         myInformation = value;
       });
     });
-    _videoPlayerScreen =
-        VideoPlayerScreen(url: 'https://www.youtube.com/watch?v=1Nr_tqkMsJs');
   }
 
   @override
@@ -63,6 +64,7 @@ class _detailTaskState extends State<detailTask> {
               subTittle: 'Atrás',
               onPressed: () {
                 textToSpeech.stop();
+                _videoPlayerScreen.dispose();
                 Navigator.pushNamed(context, 'tasks-list');
               },
               icon: Icons.arrow_back_rounded,
@@ -136,9 +138,9 @@ void completeTask(BuildContext context) {
 
 void completedTrue(BuildContext context) async {
   CustomEasyLoading.instance.dismiss();
+  _videoPlayerScreen.dispose();
   CustomEasyLoading.instance.showSuccess('Se ha completado su tarea');
   await Future.delayed(Duration(milliseconds: 1500));
-  _videoPlayerScreen.dispose();
   textToSpeech.stop();
   Navigator.pushNamed(context, 'tasks-list');
 }

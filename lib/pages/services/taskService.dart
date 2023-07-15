@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-Future<List<Task>> getTaskService() async {
+Future<List<Task>> getTaskService(bool isCompleted) async {
   initializeDateFormatting('es');
   final apiBaseUrl = dotenv.env['API_BASE'];
   Map<String, String> headers = {
@@ -16,9 +16,10 @@ Future<List<Task>> getTaskService() async {
 
   try {
     final response = await http.get(
-        Uri.parse('${apiBaseUrl!}/patients/${await getString('idUser')}/tasks'),
+        Uri.parse(
+            '${apiBaseUrl!}/patients/${await getString('idUser')}/tasks?isCompleted=$isCompleted'),
         headers: headers);
-    if (await response.statusCode >= 200 && await response.statusCode < 300) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
       List<dynamic> jsonResponse = jsonDecode(response.body);
       List<Task> tareas =
           jsonResponse.map((item) => Task.fromJson(item)).toList();
