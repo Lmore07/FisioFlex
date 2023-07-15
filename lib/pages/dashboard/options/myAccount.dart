@@ -5,6 +5,7 @@ import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/inputs.dart';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/interfaces/userInterface.dart';
 import 'package:flutter/material.dart';
 
 //Variables Globales
@@ -126,7 +127,7 @@ class ImageProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsetsDirectional.only(start: 100, end: 100),
+      padding: EdgeInsetsDirectional.only(start: 120, end: 120),
       child: Column(children: [
         Image(
           image: AssetImage('assets/images/avatar_logo.png'),

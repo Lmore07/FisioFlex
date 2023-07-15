@@ -1,11 +1,10 @@
-import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/classes/environment.dart';
+import 'package:TeraFlex/pages/interfaces/assignmentInterface.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 
 Future<Assignment> assignmentDetailService(int idAssignment) async {
-  final apiBaseUrl = dotenv.env['API_BASE'];
   Map<String, String> headers = {
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': 'Bearer ${await getString('token')}'
@@ -13,9 +12,9 @@ Future<Assignment> assignmentDetailService(int idAssignment) async {
 
   try {
     final response = await http.get(
-        Uri.parse('${apiBaseUrl!}/assignments/$idAssignment/task'),
+        Uri.parse('${getVariableAPI()}/assignments/$idAssignment/task'),
         headers: headers);
-    if (await response.statusCode >= 200 && await response.statusCode < 300) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       return Assignment.fromJson(jsonResponse);
     } else {

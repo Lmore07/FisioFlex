@@ -1,4 +1,4 @@
-import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/interfaces/loginInformationInterface.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
 LoginInformation decodificarToken(String token) {

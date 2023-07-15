@@ -3,7 +3,7 @@ import 'package:TeraFlex/pages/designs/background.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/inputs.dart';
 import 'package:TeraFlex/pages/designs/txtTitle.dart';
-import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/interfaces/credentialsInterface.dart';
 import 'package:TeraFlex/pages/services/loginService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

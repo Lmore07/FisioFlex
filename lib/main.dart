@@ -7,7 +7,6 @@ import 'package:TeraFlex/pages/security/forgotPassword.dart';
 import 'package:TeraFlex/pages/security/login.dart';
 import 'package:TeraFlex/pages/security/recoveryPassword.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -16,8 +15,6 @@ String? savedResponse;
 Future<void> main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Asegura la inicialización de Flutter
-  await dotenv.load();
-  //await removeData('token');
   savedResponse = await getString('token');
   runApp(const MyApp());
 }

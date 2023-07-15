@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:TeraFlex/pages/classes/environment.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
@@ -20,7 +20,6 @@ final videoExtensions = [
 ];
 
 Future<File> downloadFileService(int idFile) async {
-  final apiBaseUrl = dotenv.env['API_BASE'];
   Map<String, String> headers = {
     'Content-Type': 'application/octet-stream;',
     'Authorization': 'Bearer ${await getString('token')}'
@@ -30,7 +29,7 @@ Future<File> downloadFileService(int idFile) async {
     WidgetsFlutterBinding
         .ensureInitialized(); // Asegura la inicialización de Flutter
     final response = await http.get(
-        Uri.parse('${apiBaseUrl!}/multimedia/download/$idFile'),
+        Uri.parse('${getVariableAPI()}/multimedia/download/$idFile'),
         headers: headers);
     if (response.statusCode >= 200 && response.statusCode < 300) {
       final bytes = response.bodyBytes;

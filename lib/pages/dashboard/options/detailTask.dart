@@ -8,6 +8,7 @@ import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/txtParraph.dart';
 import 'package:TeraFlex/pages/classes/videoPlayer.dart';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/interfaces/userInterface.dart';
 import 'package:TeraFlex/pages/services/taskService.dart';
 import 'package:flutter/material.dart';
 

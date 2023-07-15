@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/interfaces/userInterface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Guardar un objeto JSON
