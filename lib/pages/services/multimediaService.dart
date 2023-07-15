@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 
 final videoExtensions = [

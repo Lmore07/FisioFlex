@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
 import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +23,7 @@ Future<UserData?> getUserInformation(String key) async {
     UserData userResponse = UserData.fromJson(jsonData);
     return userResponse;
   }
+  return null;
 }
 
 // Guardar un string

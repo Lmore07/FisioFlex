@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:TeraFlex/pages/classes/alerts.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:TeraFlex/pages/services/multimediaService.dart';
-import 'package:webview_flutter_platform_interface/src/platform_navigation_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:video_player/video_player.dart';
@@ -28,6 +27,7 @@ final videoExtensions = [
 int indexVideo = 0;
 File videoFile = File('');
 
+// ignore: must_be_immutable
 class VideoPlayerScreen extends StatefulWidget {
   late List<dynamic> url;
   late List<int> idVideos;
