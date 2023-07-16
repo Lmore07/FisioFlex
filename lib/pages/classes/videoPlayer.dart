@@ -88,7 +88,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             looping: true);
         CustomEasyLoading.instance.dismiss();
       });
-      ;
+    }).catchError((e) {
+      CustomEasyLoading.instance.dismiss();
+      CustomEasyLoading.instance.showError(e.toString());
     });
   }
 
@@ -117,38 +119,44 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getListString('videoUrls').then((value) => {
-          CustomEasyLoading.instance.dismiss(),
-          setState(() {
-            widget.url = value;
-          }),
-          getListInt("idVideos").then((ids) => {widget.idVideos = ids}),
-          if (isYoutubeLink(widget.url[indexVideo]))
-            {
-              if (Platform.isAndroid || Platform.isIOS)
-                {
-                  _youtubePlayerController = YoutubePlayerController(
-                      initialVideoId:
-                          YoutubePlayer.convertUrlToId(widget.url[indexVideo])!,
-                      flags: YoutubePlayerFlags(
-                        autoPlay: true,
-                        controlsVisibleAtStart: true,
-                        mute: false,
-                      )),
-                }
-            }
-          // Configuración para videos no relacionados con YouTube
-          else if (isNaturalVideo(widget.url[indexVideo]))
-            {
-              downloadFile(),
-              _videoPlayerController = VideoPlayerController.file(videoFile),
-              _chewieController = ChewieController(
-                  videoPlayerController: _videoPlayerController!,
-                  autoPlay: true,
-                  looping: true),
+    getListString('videoUrls')
+        .then((value) => {
               CustomEasyLoading.instance.dismiss(),
-            }
-        });
+              setState(() {
+                widget.url = value;
+              }),
+              getListInt("idVideos").then((ids) => {widget.idVideos = ids}),
+              if (isYoutubeLink(widget.url[indexVideo]))
+                {
+                  if (Platform.isAndroid || Platform.isIOS)
+                    {
+                      _youtubePlayerController = YoutubePlayerController(
+                          initialVideoId: YoutubePlayer.convertUrlToId(
+                              widget.url[indexVideo])!,
+                          flags: YoutubePlayerFlags(
+                            autoPlay: true,
+                            controlsVisibleAtStart: true,
+                            mute: false,
+                          )),
+                    }
+                }
+              // Configuración para videos no relacionados con YouTube
+              else if (isNaturalVideo(widget.url[indexVideo]))
+                {
+                  downloadFile(),
+                  _videoPlayerController =
+                      VideoPlayerController.file(videoFile),
+                  _chewieController = ChewieController(
+                      videoPlayerController: _videoPlayerController!,
+                      autoPlay: true,
+                      looping: true),
+                  CustomEasyLoading.instance.dismiss(),
+                }
+            })
+        .catchError((error) {
+      CustomEasyLoading.instance.dismiss();
+      CustomEasyLoading.instance.showError(error);
+    });
   }
 
   @override

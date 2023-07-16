@@ -1,6 +1,6 @@
 import 'package:TeraFlex/pages/classes/environment.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
-import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+import 'package:TeraFlex/pages/interfaces/userInterface.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

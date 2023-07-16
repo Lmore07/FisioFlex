@@ -1,33 +1,32 @@
 import 'package:TeraFlex/pages/classes/environment.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:TeraFlex/pages/interfaces/tasksInterface.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/date_symbol_data_local.dart';
 
-Future<List<Task>> getTaskService(bool isCompleted) async {
+Future<TaskResponse> getTaskService(bool isCompleted) async {
   initializeDateFormatting('es');
   Map<String, String> headers = {
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': 'Bearer ${await getString('token')}'
   };
 
-  try {
-    final response = await http.get(
-        Uri.parse(
-            '${getVariableAPI()}/patients/${await getString('idUser')}/tasks?isCompleted=$isCompleted'),
-        headers: headers);
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      List<dynamic> jsonResponse = jsonDecode(response.body);
-      List<Task> tareas =
-          jsonResponse.map((item) => Task.fromJson(item)).toList();
-      return tareas;
-    } else {
-      throw Exception('Error al obtener las tareas: ${response.statusCode}');
-    }
-  } catch (error) {
-    throw Exception('Error al obtener las tareas: ${error.toString()}');
-  }
+  final response = await http.get(
+      Uri.parse(
+          '${getVariableAPI()}/patients/${await getString('idUser')}/tasks?isCompleted=$isCompleted'),
+      headers: headers);
+  Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+  final List<Task>? taskData = jsonResponse['data'] != null
+      ? List<Task>.from(jsonResponse['data'].map((item) => Task.fromJson(item)))
+      : null;
+  final respuesta = TaskResponse(
+      message: jsonResponse['message'],
+      data: taskData,
+      statusCode: jsonResponse['statusCode'],
+      error: jsonResponse['error']);
+  return respuesta;
 }
 
 Future<bool> completeTaskService(int idAssignment) async {

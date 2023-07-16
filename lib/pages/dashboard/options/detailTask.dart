@@ -7,7 +7,6 @@ import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/txtParraph.dart';
 import 'package:TeraFlex/pages/classes/videoPlayer.dart';
-import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:TeraFlex/pages/interfaces/userInterface.dart';
 import 'package:TeraFlex/pages/services/taskService.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ import 'package:flutter/material.dart';
 late int idTask;
 late int timeExpected;
 late String title;
-late String description;
+late String? description;
 late int idAssigment;
 late List<String> videos = [];
 UserData? myInformation =
@@ -100,12 +99,12 @@ class detailTaskWidget extends StatelessWidget {
               ),
               buttonVoiceIcon(onPressed: () {
                 textToSpeech.speak(getMessageVoice(myInformation?.firstName,
-                    title, description, timeExpected));
+                    title, description ?? '', timeExpected));
               }),
             ]),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
-              child: txtParraph(label: description),
+              child: txtParraph(label: description ?? 'Sin descripción'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

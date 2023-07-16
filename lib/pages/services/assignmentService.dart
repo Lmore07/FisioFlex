@@ -4,25 +4,21 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 
-Future<Assignment> assignmentDetailService(int idAssignment) async {
+Future<AssginmentResponse> assignmentDetailService(int idAssignment) async {
   Map<String, String> headers = {
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': 'Bearer ${await getString('token')}'
   };
 
-  try {
-    final response = await http.get(
-        Uri.parse('${getVariableAPI()}/assignments/$idAssignment/task'),
-        headers: headers);
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      return Assignment.fromJson(jsonResponse);
-    } else {
-      throw Exception(
-          'Error al obtener el detalle de la tarea: ${response.statusCode}');
-    }
-  } catch (error) {
-    throw Exception(
-        'Error al obtener el detalle de la tarea: ${error.toString()}');
-  }
+  final response = await http.get(
+      Uri.parse('${getVariableAPI()}/assignments/$idAssignment/task'),
+      headers: headers);
+  Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+  ;
+  final respuesta = AssginmentResponse(
+      message: jsonResponse['message'],
+      data: Assignment.fromJson(jsonResponse['data']),
+      error: jsonResponse['error'],
+      statusCode: jsonResponse['statusCode']);
+  return respuesta;
 }

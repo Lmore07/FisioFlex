@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 bool selected = false;
 List<Task> listTasks = [];
 DateTime now = DateTime.now();
+DateTime newDateTime = now.subtract(Duration(hours: 5, minutes: 0));
 
 class tasksList extends StatefulWidget {
   const tasksList({super.key});
@@ -28,15 +29,14 @@ class _tasksListState extends State<tasksList> {
     listTasks.clear();
     getTaskService(selected).then((value) {
       CustomEasyLoading.instance.dismiss();
-      if (value.isEmpty) {
-        CustomEasyLoading.instance.showMessage('No tiene tareas pendientes');
+      if (value.data != null) {
+        setState(() {
+          listTasks = value.data!;
+        });
+      } else {
+        CustomEasyLoading.instance.showError(value.message!);
+        Navigator.popAndPushNamed(context, 'dashboard');
       }
-      setState(() {
-        listTasks = value;
-      });
-    }).catchError((e) {
-      Navigator.popAndPushNamed(context, 'dashboard');
-      CustomEasyLoading.instance.showError(e.toString());
     });
   }
 
@@ -102,12 +102,8 @@ class _tasksListState extends State<tasksList> {
                           .showLoading('Cargando tareas...');
                       getTaskService(selected).then((value) {
                         CustomEasyLoading.instance.dismiss();
-                        if (value.isEmpty) {
-                          CustomEasyLoading.instance
-                              .showMessage('No tiene tareas completadas');
-                        }
                         setState(() {
-                          listTasks = value;
+                          listTasks = value.data!;
                         });
                       }).catchError((e) {
                         CustomEasyLoading.instance.showError(e.toString());
@@ -159,22 +155,22 @@ class taskList extends StatelessWidget {
           child: Column(
             children: [
               for (var task in listTasks)
-                if (now.day <= task.dueDate.day &&
-                    now.month <= task.dueDate.month &&
-                    now.year <= task.dueDate.year)
+                if (newDateTime.day <= task.dueDate.day &&
+                    newDateTime.month <= task.dueDate.month &&
+                    newDateTime.year <= task.dueDate.year)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: cardButtonTaskWidget(
                         icon: Icons.format_list_bulleted_rounded,
                         tittle: task.task.title,
-                        subtitle: ' ${task.estimatedTime} minutos',
+                        subtitle: ' ${task.task.estimatedTime} minutos',
                         onPressed: () {
                           CustomEasyLoading.instance
                               .showLoading("Cargando tarea...");
                           assignmentDetailService(task.id)
                               .then((assignment) async {
                             List<AssignmentFile> assignmentFiles =
-                                assignment.files;
+                                assignment.data?.files ?? [];
                             List<String> videos = assignmentFiles
                                 .map((file) => file.url)
                                 .toList();
@@ -188,7 +184,7 @@ class taskList extends StatelessWidget {
                                   'title': task.task.title,
                                   'idAssigment': task.id,
                                   'description': task.task.description,
-                                  'time': task.estimatedTime
+                                  'time': task.task.estimatedTime
                                 });
                           });
                         }),

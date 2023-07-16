@@ -1,3 +1,5 @@
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+
 class Assignment {
   final int assignmentId;
   final int taskId;
@@ -59,4 +61,11 @@ class AssignmentFile {
       type: json['type'],
     );
   }
+}
+
+class AssginmentResponse extends GeneralResponse<Assignment> {
+  AssginmentResponse(
+      {Assignment? data, String? message, int? statusCode, String? error})
+      : super(
+            data: data, message: message, statusCode: statusCode, error: error);
 }
