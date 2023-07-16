@@ -184,7 +184,8 @@ class taskList extends StatelessWidget {
                                   'title': task.task.title,
                                   'idAssigment': task.id,
                                   'description': task.task.description,
-                                  'time': task.task.estimatedTime
+                                  'time': task.task.estimatedTime,
+                                  'isCompleted': selected
                                 });
                           });
                         }),

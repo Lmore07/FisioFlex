@@ -37,11 +37,10 @@ Future<bool> completeTaskService(int idAssignment) async {
 
   try {
     final response = await http.patch(
-        Uri.parse('${getVariableAPI()}/assigments/$idAssignment/completed'),
+        Uri.parse('${getVariableAPI()}/assignments/$idAssignment/completed'),
         headers: headers);
     if (await response.statusCode >= 200 && await response.statusCode < 300) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      print(jsonResponse);
       return true;
     } else {
       return false;

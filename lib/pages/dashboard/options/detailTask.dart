@@ -17,6 +17,7 @@ late int timeExpected;
 late String title;
 late String? description;
 late int idAssigment;
+late bool isCompleted;
 late List<String> videos = [];
 UserData? myInformation =
     UserData(id: 1, firstName: "", lastName: "", docNumber: "");
@@ -52,6 +53,7 @@ class _detailTaskState extends State<detailTask> {
     title = arguments['title'];
     description = arguments['description'];
     timeExpected = arguments['time'];
+    isCompleted = arguments['isCompleted'];
     return SafeArea(
       child: Scaffold(
         backgroundColor: backgroundColor,
@@ -118,11 +120,12 @@ class detailTaskWidget extends StatelessWidget {
             spaced(20, 0),
             _videoPlayerScreen,
             spaced(20, 0),
-            buttonFinish(
-                label: 'Finalizar tarea',
-                onPressed: () {
-                  completeTask(context);
-                }),
+            if (!isCompleted)
+              buttonFinish(
+                  label: 'Finalizar tarea',
+                  onPressed: () {
+                    completeTask(context);
+                  }),
           ],
         ));
   }

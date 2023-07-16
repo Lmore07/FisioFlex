@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:TeraFlex/pages/classes/alerts.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
@@ -165,27 +166,41 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       child: Container(
           child: Center(
               child: Column(
-        children: [
-          if ((Platform.isAndroid || Platform.isIOS) &&
-              isYoutubeLink(widget.url[indexVideo]))
-            showYoutubeVideo()
-          else if ((Platform.isAndroid || Platform.isIOS) &&
-              !isNaturalVideo(widget.url[indexVideo]) &&
-              !isYoutubeLink(widget.url[indexVideo]))
-            showImage()
-          else if ((Platform.isAndroid || Platform.isIOS) &&
-              isNaturalVideo(widget.url[indexVideo]))
-            if (_chewieController != null)
-              AspectRatio(
-                aspectRatio: _videoPlayerController!.value.aspectRatio,
-                child: Chewie(
-                  controller: _chewieController!,
-                ),
-              ),
-          if (widget.url.length > 1) showButtons()
-        ],
+        children: showVideoPlayer,
       ))),
     );
+  }
+
+  List<Widget> get showVideoPlayer {
+    return [
+      if ((Platform.isAndroid || Platform.isIOS) &&
+          isYoutubeLink(widget.url[indexVideo]))
+        showYoutubeVideo()
+      else if ((Platform.isAndroid || Platform.isIOS) &&
+          !isNaturalVideo(widget.url[indexVideo]) &&
+          !isYoutubeLink(widget.url[indexVideo]))
+        showImage()
+      else if ((Platform.isAndroid || Platform.isIOS) &&
+          isNaturalVideo(widget.url[indexVideo]))
+        showVideoAspectRatio(),
+      if (widget.url.length > 1) showButtons()
+    ];
+  }
+
+  AspectRatio showVideoAspectRatio() {
+    if (videoExtensions.any((extension) =>
+        _videoPlayerController!.dataSource.toLowerCase().endsWith(extension))) {
+      return AspectRatio(
+        aspectRatio: _videoPlayerController!.value.aspectRatio,
+        child: Chewie(
+          controller: _chewieController!,
+        ),
+      );
+    } else {
+      return AspectRatio(
+        aspectRatio: 1 / 1,
+      );
+    }
   }
 
   Container showButtons() {
