@@ -1,31 +1,16 @@
 import 'dart:io';
-import 'dart:math';
-
 import 'package:TeraFlex/pages/classes/alerts.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:TeraFlex/pages/services/multimediaService.dart';
 import 'package:flutter/material.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:video_player/video_player.dart';
-import 'package:chewie/chewie.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:pod_player/pod_player.dart';
 
-ChewieController? _chewieController;
-VideoPlayerController? _videoPlayerController;
-YoutubePlayerController? _youtubePlayerController;
-late PageController _pageController;
-final videoExtensions = [
-  'mp4',
-  'avi',
-  'mov',
-  'wmv',
-  'mkv',
-  'flv',
-  'webm',
-  'm4v',
-  '3gp',
-  'mpeg'
-];
-int indexVideo = 0;
+late PodPlayerController copyPodPlayerYoutubeController;
+late PodPlayerController copyPodPlayerFileController;
+final CarouselController _controller = CarouselController();
+
 File videoFile = File('');
 
 // ignore: must_be_immutable
@@ -35,19 +20,8 @@ class VideoPlayerScreen extends StatefulWidget {
   VideoPlayerScreen({super.key});
 
   void dispose() {
-    if (_chewieController != null) {
-      _chewieController?.dispose();
-      videoFile = File('');
-    }
-    if (_videoPlayerController != null) {
-      _videoPlayerController?.dispose();
-      videoFile = File('');
-    }
-    if (_youtubePlayerController != null) {
-      _youtubePlayerController?.pause();
-      _youtubePlayerController?.dispose();
-    }
-    indexVideo = 0;
+    copyPodPlayerYoutubeController.dispose();
+    copyPodPlayerFileController.dispose();
     url.clear();
     idVideos.clear();
   }
@@ -58,6 +32,8 @@ class VideoPlayerScreen extends StatefulWidget {
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   get idVideos => null;
+  late final PodPlayerController? podPlayerYoutubeController;
+  late final PodPlayerController? podPlayerFileController;
 
   bool isYoutubeLink(String link) {
     return link.contains('youtube.com') || link.contains('youtu.be');
@@ -78,39 +54,15 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     }
   }
 
-  dynamic downloadFile() {
-    downloadFileService(widget.idVideos[indexVideo]).then((value) {
-      setState(() {
-        videoFile = value;
-        _videoPlayerController = VideoPlayerController.file(videoFile);
-        _chewieController = ChewieController(
-            videoPlayerController: _videoPlayerController!,
-            autoPlay: true,
-            looping: true);
-        CustomEasyLoading.instance.dismiss();
-      });
-    }).catchError((e) {
-      CustomEasyLoading.instance.dismiss();
-      CustomEasyLoading.instance.showError(e.toString());
-    });
+  Future<File> downloadFile(int index) async {
+    return await downloadFileService(widget.idVideos[index]);
   }
 
   @override
   void dispose() {
     // Libera los recursos de los controladores de video al salir del componente
-    if (_chewieController != null) {
-      _chewieController?.dispose();
-      videoFile = File('');
-    }
-    if (_videoPlayerController != null) {
-      _videoPlayerController?.dispose();
-      videoFile = File('');
-    }
-    if (_youtubePlayerController != null) {
-      _youtubePlayerController?.pause();
-      _youtubePlayerController?.dispose();
-    }
-    indexVideo = 0;
+    copyPodPlayerYoutubeController.dispose();
+    copyPodPlayerFileController.dispose();
     widget.url.clear();
     idVideos.clear();
     super.dispose();
@@ -127,32 +79,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 widget.url = value;
               }),
               getListInt("idVideos").then((ids) => {widget.idVideos = ids}),
-              if (isYoutubeLink(widget.url[indexVideo]))
-                {
-                  if (Platform.isAndroid || Platform.isIOS)
-                    {
-                      _youtubePlayerController = YoutubePlayerController(
-                          initialVideoId: YoutubePlayer.convertUrlToId(
-                              widget.url[indexVideo])!,
-                          flags: YoutubePlayerFlags(
-                            autoPlay: true,
-                            controlsVisibleAtStart: true,
-                            mute: false,
-                          )),
-                    }
-                }
-              // Configuración para videos no relacionados con YouTube
-              else if (isNaturalVideo(widget.url[indexVideo]))
-                {
-                  downloadFile(),
-                  _videoPlayerController =
-                      VideoPlayerController.file(videoFile),
-                  _chewieController = ChewieController(
-                      videoPlayerController: _videoPlayerController!,
-                      autoPlay: true,
-                      looping: true),
-                  CustomEasyLoading.instance.dismiss(),
-                }
             })
         .catchError((error) {
       CustomEasyLoading.instance.dismiss();
@@ -166,161 +92,102 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       child: Container(
           child: Center(
               child: Column(
-        children: showVideoPlayer,
+        children: [
+          FutureBuilder(
+              future: loadMultimedia(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return CarouselSlider(
+                      carouselController: _controller,
+                      items: snapshot.data,
+                      options: CarouselOptions(
+                        autoPlay: false,
+                        initialPage: 0,
+                        height: 300,
+                        autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+                        enlargeCenterPage: true,
+                        enlargeFactor: 0.3,
+                        scrollDirection: Axis.horizontal,
+                      ));
+                } else if (snapshot.hasError) {
+                  return Text("");
+                } else {
+                  return CircularProgressIndicator();
+                }
+              }),
+          spaced(25, 0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                  child: ElevatedButton(
+                      child: Icon(Icons.arrow_back),
+                      onPressed: () => _controller.previousPage())),
+              ...Iterable<int>.generate(widget.url.length).map((e) => Flexible(
+                      child: ElevatedButton(
+                    onPressed: () => _controller.animateToPage(e),
+                    child: Text((e + 1).toString()),
+                  ))),
+              Flexible(
+                  child: ElevatedButton(
+                      child: Icon(Icons.arrow_forward),
+                      onPressed: () => _controller.nextPage())),
+            ],
+          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: widget.url.asMap().entries.map((entry) {
+          //     return GestureDetector(
+          //       onTap: () => _controller.animateToPage(entry.key),
+          //       child: Container(
+          //         width: 12.0,
+          //         height: 12.0,
+          //         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+          //         decoration: BoxDecoration(
+          //             shape: BoxShape.circle,
+          //             color: (Theme.of(context).brightness == Brightness.dark
+          //                     ? Colors.white
+          //                     : Colors.black)
+          //                 .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+          //       ),
+          //     );
+          //   }).toList(),
+        ],
       ))),
     );
   }
 
-  List<Widget> get showVideoPlayer {
-    return [
-      if ((Platform.isAndroid || Platform.isIOS) &&
-          isYoutubeLink(widget.url[indexVideo]))
-        showYoutubeVideo()
-      else if ((Platform.isAndroid || Platform.isIOS) &&
-          !isNaturalVideo(widget.url[indexVideo]) &&
-          !isYoutubeLink(widget.url[indexVideo]))
-        showImage()
-      else if ((Platform.isAndroid || Platform.isIOS) &&
-          isNaturalVideo(widget.url[indexVideo]))
-        showVideoAspectRatio(),
-      if (widget.url.length > 1) showButtons()
-    ];
-  }
+  Future<List<Widget>> loadMultimedia() async {
+    //CustomEasyLoading.instance.showLoading("Cargando recursos...");
+    List<Widget> carouselItems = [];
 
-  AspectRatio showVideoAspectRatio() {
-    if (videoExtensions.any((extension) =>
-        _videoPlayerController!.dataSource.toLowerCase().endsWith(extension))) {
-      return AspectRatio(
-        aspectRatio: _videoPlayerController!.value.aspectRatio,
-        child: Chewie(
-          controller: _chewieController!,
-        ),
-      );
-    } else {
-      return AspectRatio(
-        aspectRatio: 1 / 1,
-      );
-    }
-  }
-
-  Container showButtons() {
-    return Container(
-      padding: EdgeInsets.only(top: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (indexVideo > 0)
-            ElevatedButton(
-                child: Container(
-                  padding: EdgeInsetsDirectional.all(2),
-                  child: Text("Video Anterior",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500)),
-                ),
-                onPressed: () {
-                  setState(() {
-                    previousButton();
-                  });
-                }),
-          SizedBox(width: 5),
-          if (indexVideo < widget.url.length - 1)
-            ElevatedButton(
-                child: Container(
-                  child: Text("Video Siguiente",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500)),
-                ),
-                onPressed: () {
-                  setState(() {
-                    nextButton();
-                  });
-                })
-        ],
-      ),
-    );
-  }
-
-  void nextButton() {
-    CustomEasyLoading.instance.showLoading('Cargando video...');
-    indexVideo++;
-    if (isYoutubeLink(widget.url[indexVideo])) {
-      if (_youtubePlayerController == null) {
-        _youtubePlayerController = YoutubePlayerController(
-          flags: YoutubePlayerFlags(
-            autoPlay: true,
-            controlsVisibleAtStart: true,
-            mute: false,
-          ),
-          initialVideoId: YoutubePlayer.convertUrlToId(widget.url[indexVideo])!,
-        );
+    for (var i = 0; i < widget.url.length; i++) {
+      if (isYoutubeLink(widget.url[i])) {
+        podPlayerYoutubeController = PodPlayerController(
+            playVideoFrom: PlayVideoFrom.youtube(
+              widget.url[i],
+            ),
+            podPlayerConfig: PodPlayerConfig(autoPlay: false))
+          ..initialise();
+        copyPodPlayerYoutubeController = podPlayerYoutubeController!;
+        carouselItems
+            .add(PodVideoPlayer(controller: podPlayerYoutubeController!));
+      } else if (isNaturalVideo(widget.url[i])) {
+        File video = await downloadFile(i);
+        podPlayerFileController = PodPlayerController(
+            playVideoFrom: PlayVideoFrom.file(
+              video,
+            ),
+            podPlayerConfig: PodPlayerConfig(autoPlay: false))
+          ..initialise();
+        copyPodPlayerFileController = podPlayerFileController!;
+        carouselItems.add(PodVideoPlayer(controller: podPlayerFileController!));
+      } else {
+        File imagen = await downloadFile(i);
+        carouselItems.add(Image.file(imagen));
       }
-      _youtubePlayerController!
-          .load(YoutubePlayer.convertUrlToId(widget.url[indexVideo])!);
-      CustomEasyLoading.instance.dismiss();
-    } else if (isNaturalVideo(widget.url[indexVideo])) {
-      downloadFile();
-    } else {
-      videoFile = File('');
     }
     CustomEasyLoading.instance.dismiss();
-  }
-
-  void previousButton() {
-    CustomEasyLoading.instance.showLoading('Cargando video...');
-    indexVideo--;
-    if (isYoutubeLink(widget.url[indexVideo])) {
-      if (_youtubePlayerController == null) {
-        _youtubePlayerController = YoutubePlayerController(
-          flags: YoutubePlayerFlags(
-            autoPlay: true,
-            controlsVisibleAtStart: true,
-            mute: false,
-          ),
-          initialVideoId: YoutubePlayer.convertUrlToId(widget.url[indexVideo])!,
-        );
-      }
-      _youtubePlayerController!
-          .load(YoutubePlayer.convertUrlToId(widget.url[indexVideo])!);
-    } else if (isNaturalVideo(widget.url[indexVideo])) {
-      downloadFile();
-    } else {
-      videoFile = File('');
-    }
-    CustomEasyLoading.instance.dismiss();
-  }
-
-  Column showImage() {
-    if (videoFile.path == "") {
-      CustomEasyLoading.instance.showLoading('Cargando imagen...');
-      downloadFile();
-    }
-    return Column(
-      children: [
-        if (videoFile.path != "") Image.file(videoFile),
-      ],
-    );
-  }
-}
-
-class showYoutubeVideo extends StatelessWidget {
-  const showYoutubeVideo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return YoutubePlayerBuilder(
-      player: YoutubePlayer(
-        controller: _youtubePlayerController!,
-        showVideoProgressIndicator: true,
-      ),
-      builder: (context, player) {
-        return player;
-      },
-    );
+    return carouselItems;
   }
 }

@@ -26,8 +26,6 @@ Future<File> downloadFileService(int idFile) async {
   };
 
   try {
-    WidgetsFlutterBinding
-        .ensureInitialized(); // Asegura la inicialización de Flutter
     final response = await http.get(
         Uri.parse('${getVariableAPI()}/multimedia/download/$idFile'),
         headers: headers);
