@@ -102,7 +102,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                       items: snapshot.data,
                       options: CarouselOptions(
                         autoPlay: false,
-                        initialPage: 0,
                         height: 300,
                         autoPlayCurve: Curves.fastLinearToSlowEaseIn,
                         enlargeCenterPage: true,
