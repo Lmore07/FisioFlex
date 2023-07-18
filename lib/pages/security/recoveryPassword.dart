@@ -132,7 +132,7 @@ class recoveryForm extends StatelessWidget {
                 label: 'Volver',
                 onPressed: () {
                   textToSpeech.stop();
-                  Navigator.pushNamed(context, 'login');
+                  Navigator.pop(context);
                 }),
             SizedBox(height: 20),
           ]),

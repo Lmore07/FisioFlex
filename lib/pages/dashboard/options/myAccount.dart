@@ -43,7 +43,7 @@ class _myAccountState extends State<myAccount> {
                 icon: Icons.arrow_back_rounded,
                 onPressed: () {
                   textToSpeech.stop();
-                  Navigator.popUntil(context, ModalRoute.withName('dashboard'));
+                  Navigator.pop(context);
                 })),
         body: SingleChildScrollView(
             child: Container(

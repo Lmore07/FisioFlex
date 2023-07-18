@@ -21,7 +21,7 @@ class _helpMenuState extends State<helpMenu> {
             subTittle: 'Atrás',
             icon: Icons.arrow_back_rounded,
             onPressed: () {
-              Navigator.pushNamed(context, 'dashboard');
+              Navigator.pop(context);
             },
           ),
         ),

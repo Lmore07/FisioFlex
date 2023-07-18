@@ -66,10 +66,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                       items: snapshot.data,
                       options: CarouselOptions(
                           autoPlay: false,
-                          height: 200,
-                          autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+                          height: 300,
                           enlargeCenterPage: true,
-                          enlargeFactor: 0.3));
+                          autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+                          enlargeFactor: 0.5));
                 } else if (snapshot.hasError) {
                   return Text("");
                 } else {

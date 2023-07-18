@@ -121,7 +121,7 @@ class forgotForm extends StatelessWidget {
             buttonTransparent(
                 label: 'Volver',
                 onPressed: () {
-                  Navigator.pushNamed(context, 'login');
+                  Navigator.pop(context);
                 }),
             SizedBox(height: 30),
           ]),

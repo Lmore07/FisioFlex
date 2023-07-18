@@ -57,7 +57,7 @@ class _detailTaskState extends State<detailTask> {
               onPressed: () {
                 textToSpeech.stop();
                 _videoPlayerScreen.dispose();
-                Navigator.popUntil(context, ModalRoute.withName('tasks-list'));
+                Navigator.pop(context);
               },
               icon: Icons.arrow_back_rounded,
             )),
@@ -153,7 +153,7 @@ void completedTrue(BuildContext context) async {
   CustomEasyLoading.instance.showSuccess('Se ha completado su tarea');
   await Future.delayed(Duration(milliseconds: 1500));
   textToSpeech.stop();
-  Navigator.popUntil(context, ModalRoute.withName('task-list'));
+  Navigator.pop(context);
 }
 
 void completedFalse(BuildContext context) {

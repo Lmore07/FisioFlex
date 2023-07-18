@@ -9,10 +9,12 @@ import 'package:TeraFlex/pages/security/recoveryPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:TeraFlex/pages/classes/alerts.dart';
 
 String? savedResponse;
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   savedResponse = await getString('token');
   runApp(const MyApp());
 }

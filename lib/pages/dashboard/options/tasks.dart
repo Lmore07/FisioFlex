@@ -32,7 +32,7 @@ class _tasksListState extends State<tasksList> {
         });
       } else {
         CustomEasyLoading.instance.showError(value.message!);
-        Navigator.popAndPushNamed(context, 'dashboard');
+        Navigator.pop(context);
       }
     });
   }
@@ -50,7 +50,7 @@ class _tasksListState extends State<tasksList> {
       child: WillPopScope(
         onWillPop: () async {
           listTasks.clear();
-          Navigator.popUntil(context, ModalRoute.withName('dashboard'));
+          Navigator.pop(context);
           return true;
         },
         child: Scaffold(
@@ -61,7 +61,7 @@ class _tasksListState extends State<tasksList> {
                 tittle: 'Tareas',
                 subTittle: 'Atrás',
                 onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName('dashboard'));
+                  Navigator.pop(context);
                 },
                 icon: Icons.arrow_back_rounded,
               )),
