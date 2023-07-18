@@ -13,8 +13,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 String? savedResponse;
 
 Future<void> main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Asegura la inicialización de Flutter
   savedResponse = await getString('token');
   runApp(const MyApp());
 }

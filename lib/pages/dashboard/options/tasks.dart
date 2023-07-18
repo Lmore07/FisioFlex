@@ -1,11 +1,8 @@
 import 'package:TeraFlex/pages/classes/alerts.dart';
-import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/cardButton.dart';
 import 'package:TeraFlex/pages/interfaces/tasksInterface.dart';
-import 'package:TeraFlex/pages/interfaces/assignmentInterface.dart';
-import 'package:TeraFlex/pages/services/assignmentService.dart';
 import 'package:TeraFlex/pages/services/taskService.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +50,7 @@ class _tasksListState extends State<tasksList> {
       child: WillPopScope(
         onWillPop: () async {
           listTasks.clear();
-          Navigator.restorablePushReplacementNamed(context, 'dashboard');
+          Navigator.popUntil(context, ModalRoute.withName('dashboard'));
           return true;
         },
         child: Scaffold(
@@ -64,8 +61,7 @@ class _tasksListState extends State<tasksList> {
                 tittle: 'Tareas',
                 subTittle: 'Atrás',
                 onPressed: () {
-                  Navigator.restorablePushReplacementNamed(
-                      context, 'dashboard');
+                  Navigator.popUntil(context, ModalRoute.withName('dashboard'));
                 },
                 icon: Icons.arrow_back_rounded,
               )),
@@ -153,48 +149,54 @@ class taskList extends StatelessWidget {
       child: SingleChildScrollView(
         child: Container(
           child: Column(
-            children: [
-              for (var task in listTasks)
-                if (newDateTime.day <= task.dueDate.day &&
-                    newDateTime.month <= task.dueDate.month &&
-                    newDateTime.year <= task.dueDate.year)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: cardButtonTaskWidget(
-                        icon: Icons.format_list_bulleted_rounded,
-                        tittle: task.task.title,
-                        subtitle: ' ${task.task.estimatedTime} minutos',
-                        onPressed: () {
-                          CustomEasyLoading.instance
-                              .showLoading("Cargando tarea...");
-                          assignmentDetailService(task.id)
-                              .then((assignment) async {
-                            List<AssignmentFile> assignmentFiles =
-                                assignment.data?.files ?? [];
-                            List<String> videos = assignmentFiles
-                                .map((file) => file.url)
-                                .toList();
-                            List<int> idVideos =
-                                assignmentFiles.map((file) => file.id).toList();
-                            await saveListString('videoUrls', videos);
-                            await saveListString('idVideos', idVideos);
-                            Navigator.pushNamed(context, 'detail-task',
-                                arguments: {
-                                  'idTask': task.task.id,
-                                  'title': task.task.title,
-                                  'idAssigment': task.id,
-                                  'description': task.task.description,
-                                  'time': task.task.estimatedTime,
-                                  'isCompleted': selected
-                                });
-                          });
-                        }),
-                  ),
-              spaced(25, 0),
-            ],
+            children: showTasks(context),
           ),
         ),
       ),
+    );
+  }
+
+  List<Widget> showTasks(BuildContext context) {
+    if (!selected) {
+      return [
+        for (var task in listTasks)
+          if (newDateTime.day <= task.dueDate.day &&
+              newDateTime.month <= task.dueDate.month &&
+              newDateTime.year <= task.dueDate.year)
+            taskListGeneral(task: task),
+        spaced(25, 0),
+      ];
+    } else {
+      return [
+        for (var task in listTasks) taskListGeneral(task: task),
+        spaced(25, 0),
+      ];
+    }
+  }
+}
+
+class taskListGeneral extends StatelessWidget {
+  const taskListGeneral({
+    super.key,
+    required this.task,
+  });
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: cardButtonTaskWidget(
+          icon: Icons.format_list_bulleted_rounded,
+          tittle: task.task.title,
+          subtitle: ' ${task.task.estimatedTime} minutos',
+          onPressed: () {
+            CustomEasyLoading.instance.showLoading("Cargando tarea...");
+            Navigator.pushNamed(context, 'detail-task', arguments: {
+              'idAssigment': task.id,
+            });
+          }),
     );
   }
 }

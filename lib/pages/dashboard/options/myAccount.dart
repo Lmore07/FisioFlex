@@ -42,7 +42,8 @@ class _myAccountState extends State<myAccount> {
                 tittle: 'Mi perfil',
                 icon: Icons.arrow_back_rounded,
                 onPressed: () {
-                  Navigator.pushNamed(context, 'dashboard');
+                  textToSpeech.stop();
+                  Navigator.popUntil(context, ModalRoute.withName('dashboard'));
                 })),
         body: SingleChildScrollView(
             child: Container(

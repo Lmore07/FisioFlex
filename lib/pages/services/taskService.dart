@@ -1,6 +1,5 @@
 import 'package:TeraFlex/pages/classes/environment.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
-import 'package:TeraFlex/pages/interfaces/interfaces.dart';
 import 'package:TeraFlex/pages/interfaces/tasksInterface.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -39,8 +38,7 @@ Future<bool> completeTaskService(int idAssignment) async {
     final response = await http.patch(
         Uri.parse('${getVariableAPI()}/assignments/$idAssignment/completed'),
         headers: headers);
-    if (await response.statusCode >= 200 && await response.statusCode < 300) {
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+    if (response.statusCode >= 200 && response.statusCode < 300) {
       return true;
     } else {
       return false;
