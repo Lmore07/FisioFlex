@@ -110,7 +110,8 @@ class actionsButtons extends StatelessWidget {
           buttonLogOut(
             onPressed: () {
               clear();
-              Navigator.popUntil(context, ModalRoute.withName('login'));
+              Navigator.popUntil(context, ModalRoute.withName('dashboard'));
+              Navigator.pushReplacementNamed(context, "login");
             },
           )
         ],
