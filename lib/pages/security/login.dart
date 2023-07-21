@@ -8,7 +8,6 @@ import 'package:TeraFlex/pages/services/loginService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 //VARIABLES GLOBALES
 bool _isKeyboardOpen = false;
 double _imageSize = 200.0;
@@ -182,7 +181,7 @@ void login(BuildContext context) {
       case 'OK':
         CustomEasyLoading.instance.dismiss();
         CustomEasyLoading.instance.showSuccess('Bienvenido');
-        Navigator.pushNamed(context, 'dashboard');
+        Navigator.pushReplacementNamed(context, "dashboard");
         break;
       default:
         CustomEasyLoading.instance.dismiss();

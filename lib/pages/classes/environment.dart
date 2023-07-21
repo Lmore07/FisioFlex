@@ -1,4 +1,4 @@
 String getVariableAPI() {
   return String.fromEnvironment("API_BASE",
-      defaultValue: "http://18.209.60.73:3000");
+      defaultValue: "http://44.202.143.143:3000");
 }
