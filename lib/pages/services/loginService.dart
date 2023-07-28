@@ -6,6 +6,7 @@ import 'package:TeraFlex/pages/interfaces/loginInformationInterface.dart';
 import 'package:TeraFlex/pages/services/myInfoService.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:TeraFlex/pages/classes/firebaseApi.dart';
 
 Future<String> loginService(Credentials credentials) async {
   Map<String, String> headers = {
@@ -30,6 +31,12 @@ Future<String> loginService(Credentials credentials) async {
       if (decoded.role != 'PATIENT') {
         return 'NO_GRANTED';
       }
+      getToken();
+      getDevideID().then((value) {
+        saveString("imei", value);
+        saveDevice();
+        configureFirebaseMessaging();
+      });
       await myInfoService();
       return 'OK';
     } else {
@@ -37,5 +44,47 @@ Future<String> loginService(Credentials credentials) async {
     }
   } catch (error) {
     return error.toString();
+  }
+}
+
+Future<void> saveDevice() async {
+  Map<String, String> headers = {
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Accept': '*/*',
+    'Authorization': 'Bearer ${await getString('token')}'
+  };
+  final body = jsonEncode({
+    "device": await getString("imei"),
+    "token": await getString("tokenNotification")
+  });
+
+  try {
+    final response = await http.post(
+        Uri.parse('${getVariableAPI()}/notification-token/register-device'),
+        body: body,
+        headers: headers);
+    print(response);
+  } catch (error) {
+    print(error.toString());
+  }
+}
+
+Future<void> updateDevice() async {
+  Map<String, String> headers = {
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Accept': '*/*',
+    'Authorization': 'Bearer ${await getString('token')}'
+  };
+  final body = jsonEncode({});
+
+  try {
+    final response = await http.patch(
+        Uri.parse(
+            '${getVariableAPI()}/notification-token/update-device/status/${await getString("imei")}'),
+        body: body,
+        headers: headers);
+    print(response);
+  } catch (error) {
+    print(error.toString());
   }
 }

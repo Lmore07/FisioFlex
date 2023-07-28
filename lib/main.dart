@@ -1,3 +1,4 @@
+import 'package:TeraFlex/pages/classes/firebaseApi.dart';
 import 'package:TeraFlex/pages/dashboard/dashboard.dart';
 import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
 import 'package:TeraFlex/pages/dashboard/options/help.dart';
@@ -6,15 +7,20 @@ import 'package:TeraFlex/pages/dashboard/options/tasks.dart';
 import 'package:TeraFlex/pages/security/forgotPassword.dart';
 import 'package:TeraFlex/pages/security/login.dart';
 import 'package:TeraFlex/pages/security/recoveryPassword.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:TeraFlex/pages/classes/alerts.dart';
+import 'firebase_options.dart';
 
 String? savedResponse;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   savedResponse = await getString('token');
   runApp(const MyApp());
 }

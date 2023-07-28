@@ -1,9 +1,12 @@
+import 'package:TeraFlex/pages/classes/firebaseApi.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/cardButton.dart';
+import 'package:TeraFlex/pages/services/loginService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:TeraFlex/pages/classes/firebaseApi.dart';
 
 //global variables
 String username = "";
@@ -22,6 +25,7 @@ class _dashboardClientState extends State<dashboardClient> {
 
     // TODO: implement initState
     super.initState();
+    requestPermission();
     getUserInformation('userInformation').then(
       (value) {
         username = value!.firstName;

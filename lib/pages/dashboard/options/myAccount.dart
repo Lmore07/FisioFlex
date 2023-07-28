@@ -5,6 +5,7 @@ import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/inputs.dart';
 import 'package:TeraFlex/pages/interfaces/userInterface.dart';
+import 'package:TeraFlex/pages/services/loginService.dart';
 import 'package:flutter/material.dart';
 
 //Variables Globales
@@ -109,9 +110,11 @@ class actionsButtons extends StatelessWidget {
           spaced(15, 0),
           buttonLogOut(
             onPressed: () {
-              clear();
-              Navigator.popUntil(context, ModalRoute.withName('dashboard'));
-              Navigator.pushReplacementNamed(context, "login");
+              updateDevice().then((value) {
+                clear();
+                Navigator.popUntil(context, ModalRoute.withName('dashboard'));
+                Navigator.pushReplacementNamed(context, "login");
+              });
             },
           )
         ],
