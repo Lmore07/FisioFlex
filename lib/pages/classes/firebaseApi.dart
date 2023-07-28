@@ -64,6 +64,7 @@ Future<void> configureFirebaseMessaging() async {
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     // Aquí manejas la notificación cuando la aplicación se abre desde la notificación
     print('Notificación abierta: ${message.notification?.body}');
+    Navigator.pushNamed(FirebaseContext.context, "dashboard");
   });
 
   // Configura el comportamiento cuando la app se abre desde una notificación (app en segundo plano o cerrada)
