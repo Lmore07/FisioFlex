@@ -4,6 +4,15 @@ import 'dart:io';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:device_info/device_info.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+class FirebaseContext {
+  static late BuildContext context;
+}
+
+final FlutterLocalNotificationsPlugin _localNotifications =
+    FlutterLocalNotificationsPlugin();
 
 void requestPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -27,11 +36,29 @@ void requestPermission() async {
   }
 }
 
-void configureFirebaseMessaging() {
-  print("Entrando a los escuchas");
+Future<void> configureFirebaseMessaging() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Notificacion: ${message.notification?.body}');
-    // Aquí manejas la notificación cuando la aplicación está en primer plano
+    final _androidChannel = const AndroidNotificationChannel("id", "name",
+        description: "",
+        importance: Importance.high,
+        playSound: true,
+        showBadge: true);
+    final notification = message.notification;
+    if (notification == null) return;
+    initLocalNotifications();
+    _localNotifications.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        payload: jsonEncode(message.toMap()),
+        NotificationDetails(
+            android: AndroidNotificationDetails(
+          _androidChannel.id,
+          _androidChannel.name,
+          channelDescription: _androidChannel.description,
+          icon: "@mipmap/launcher_icon",
+        )));
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -41,6 +68,14 @@ void configureFirebaseMessaging() {
 
   // Configura el comportamiento cuando la app se abre desde una notificación (app en segundo plano o cerrada)
   FirebaseMessaging.onBackgroundMessage(_onBackgroundMessageHandler);
+}
+
+Future initLocalNotifications() async {
+  const android = AndroidInitializationSettings("@mipmap/launcher_icon");
+  const settings = InitializationSettings(android: android);
+  await _localNotifications.initialize(
+    settings
+  );
 }
 
 Future<String> getDevideID() async {

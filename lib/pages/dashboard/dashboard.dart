@@ -38,6 +38,7 @@ class _dashboardClientState extends State<dashboardClient> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseContext.context = context;
     return SafeArea(
       child: WillPopScope(
         onWillPop: () async {
