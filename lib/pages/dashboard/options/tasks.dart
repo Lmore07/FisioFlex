@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 bool selected = false;
 List<Task> listTasks = [];
 DateTime now = DateTime.now();
-DateTime newDateTime = now.subtract(Duration(hours: 5, minutes: 0));
 
 class tasksList extends StatefulWidget {
   const tasksList({super.key});
@@ -50,6 +49,7 @@ class _tasksListState extends State<tasksList> {
       child: WillPopScope(
         onWillPop: () async {
           listTasks.clear();
+          CustomEasyLoading.instance.dismiss();
           Navigator.pop(context);
           return true;
         },
@@ -93,23 +93,15 @@ class _tasksListState extends State<tasksList> {
                   onChanged: (value) {
                     setState(() {
                       selected = value!;
-                      listTasks.clear();
-                      CustomEasyLoading.instance
-                          .showLoading('Cargando tareas...');
-                      getTaskService(selected).then((value) {
-                        CustomEasyLoading.instance.dismiss();
-                        setState(() {
-                          listTasks = value.data!;
-                        });
-                      }).catchError((e) {
-                        CustomEasyLoading.instance.showError(e.toString());
-                      });
+                      tasksLoad();
                     });
                   },
                   value: selected,
                   items: [
-                    DropdownMenuItem(child: Text('Pendientes'), value: false),
-                    DropdownMenuItem(child: Text('Completadas'), value: true)
+                    DropdownMenuItem(
+                        child: Text('Tareas pendientes'), value: false),
+                    DropdownMenuItem(
+                        child: Text('Tareas completadas'), value: true)
                   ],
                   isExpanded: true,
                   icon: Icon(
@@ -129,72 +121,63 @@ class _tasksListState extends State<tasksList> {
                 ),
               ),
               spaced(25, 0),
-              taskList()
+              Expanded(
+                  child: SingleChildScrollView(
+                child: Container(
+                    child: Column(
+                  children: showTasks(context),
+                )),
+              ))
             ]),
           ),
         ),
       ),
     );
   }
-}
 
-class taskList extends StatelessWidget {
-  const taskList({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: showTasks(context),
-          ),
-        ),
-      ),
-    );
+  void tasksLoad() {
+    listTasks.clear();
+    CustomEasyLoading.instance.showLoading('Cargando tareas...');
+    getTaskService(selected).then((value) {
+      CustomEasyLoading.instance.dismiss();
+      setState(() {
+        listTasks = value.data!;
+      });
+    }).catchError((e) {
+      CustomEasyLoading.instance.showError(e.toString());
+    });
   }
 
   List<Widget> showTasks(BuildContext context) {
+    DateTime newDateTime = now.subtract(Duration(hours: 5, minutes: 0));
     if (!selected) {
       return [
         for (var task in listTasks)
-          if (newDateTime.day <= task.dueDate.day &&
-              newDateTime.month <= task.dueDate.month &&
-              newDateTime.year <= task.dueDate.year)
-            taskListGeneral(task: task),
+          if (newDateTime.isBefore(task.dueDate)) cardTask(context, task),
         spaced(25, 0),
       ];
     } else {
       return [
-        for (var task in listTasks) taskListGeneral(task: task),
+        for (var task in listTasks) cardTask(context, task),
         spaced(25, 0),
       ];
     }
   }
-}
 
-class taskListGeneral extends StatelessWidget {
-  const taskListGeneral({
-    super.key,
-    required this.task,
-  });
-
-  final Task task;
-
-  @override
-  Widget build(BuildContext context) {
+  Padding cardTask(BuildContext context, Task task) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: cardButtonTaskWidget(
           icon: Icons.format_list_bulleted_rounded,
           tittle: task.task.title,
           subtitle: ' ${task.task.estimatedTime} minutos',
-          onPressed: () {
+          onPressed: () async {
             CustomEasyLoading.instance.showLoading("Cargando tarea...");
-            Navigator.pushNamed(context, 'detail-task', arguments: {
+            await Navigator.pushNamed(context, 'detail-task', arguments: {
               'idAssigment': task.id,
+            }).then((value) {
+              selected = false;
+              tasksLoad();
             });
           }),
     );

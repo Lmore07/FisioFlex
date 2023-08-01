@@ -104,7 +104,7 @@ class actionsButtons extends StatelessWidget {
           buttonTest(
             onPressed: () {
               textToSpeech.speak(
-                  'Hola, tu nombre es: ${myInformation?.firstName} ${myInformation?.lastName}, tu número de cédula es: ${myInformation?.docNumber}');
+                  'Hola, tu nombre es: ${myInformation?.firstName} ${myInformation?.lastName}, tu número de cédula es: ${myInformation?.docNumber}, tu número de teléfono es: ${myInformation?.phone ?? 'vacia por ahora'} y tu descripción es: ${myInformation?.description ?? 'vacia por ahora'}');
             },
           ),
           spaced(15, 0),

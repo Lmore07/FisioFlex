@@ -153,7 +153,7 @@ void completedTrue(BuildContext context) async {
   CustomEasyLoading.instance.showSuccess('Se ha completado su tarea');
   await Future.delayed(Duration(milliseconds: 1500));
   textToSpeech.stop();
-  Navigator.pop(context);
+  Navigator.pop(context, true);
 }
 
 void completedFalse(BuildContext context) {

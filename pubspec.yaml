@@ -61,7 +61,6 @@ dev_dependencies:
   carousel_slider: ^4.2.1
   pod_player: ^0.2.0
   device_info: any
-  flutter_screenutil: ^5.8.4
   
 flutter_launcher_icons:
   android: "launcher_icon"
