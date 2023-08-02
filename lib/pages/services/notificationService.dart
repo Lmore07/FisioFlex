@@ -13,9 +13,9 @@ Future<void> updateDevice() async {
   final body = jsonEncode({});
 
   try {
-    final response = await http.patch(
+    final response = await http.delete(
         Uri.parse(
-            '${getVariableAPI()}/notification-token/update-device/status/${await getString("imei")}'),
+            '${getVariableAPI()}/notification-token/delete-device/${await getString("imei")}'),
         body: body,
         headers: headers);
     print(response);
