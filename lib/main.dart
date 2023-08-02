@@ -3,6 +3,7 @@ import 'package:TeraFlex/pages/dashboard/dashboard.dart';
 import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
 import 'package:TeraFlex/pages/dashboard/options/help.dart';
 import 'package:TeraFlex/pages/dashboard/options/myAccount.dart';
+import 'package:TeraFlex/pages/dashboard/options/notification.dart';
 import 'package:TeraFlex/pages/dashboard/options/tasks.dart';
 import 'package:TeraFlex/pages/security/forgotPassword.dart';
 import 'package:TeraFlex/pages/security/login.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         'tasks-list': (context) => const tasksList(),
         'detail-task': (context) => const detailTask(),
         'my-account': (context) => const myAccount(),
+        'notification': (context) => const NotificationWidget(),
         'help': (context) => const helpMenu(),
       },
     );

@@ -69,7 +69,9 @@ class _dashboardClientState extends State<dashboardClient> {
                       cardButtonWidget(
                           icon: Icons.notifications_sharp,
                           tittle: 'Notificaciones',
-                          onPressed: () {}),
+                          onPressed: () {
+                            redirectToNotification(context);
+                          }),
                       spaced(25, 0),
                       cardButtonWidget(
                           icon: Icons.person_3_sharp,
@@ -105,4 +107,8 @@ void redirectToAccount(BuildContext context) {
 
 void redirectToHelp(BuildContext context) {
   Navigator.pushNamed(context, 'help');
+}
+
+void redirectToNotification(BuildContext context) {
+  Navigator.pushNamed(context, 'notification');
 }

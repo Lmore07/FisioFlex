@@ -120,9 +120,70 @@ class cardButtonTaskWidget extends StatelessWidget {
               ],
             ),
           ],
-          
         ),
-        
+      ),
+    );
+  }
+}
+
+class cardNotification extends StatelessWidget {
+  final String tittle;
+  final VoidCallback onPressed;
+  final String? subtitle;
+
+  const cardNotification({
+    super.key,
+    required this.tittle,
+    this.subtitle,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsetsDirectional.all(20),
+      decoration: BoxDecoration(
+          color: cardColor, borderRadius: BorderRadius.circular(15)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width - 160),
+                child: Wrap(
+                  children: [Text(tittle, style: textTitleStyleCard)],
+                ),
+              ),
+              spaced(10, 0),
+              Container(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width - 160),
+                child: Wrap(children: [
+                  Text(
+                    subtitle!,
+                    textAlign: TextAlign.left,
+                    style: textSubtitleStyleCard,
+                  ),
+                ]),
+              )
+            ],
+          ),
+          SizedBox(width: 25),
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+            FloatingActionButton(
+              backgroundColor: buttonFinishColor,
+              onPressed: onPressed,
+              child: Icon(
+                Icons.check_circle_outline_rounded,
+                color: Colors.white,
+                size: 40,
+              ),
+            )
+          ])
+        ],
       ),
     );
   }

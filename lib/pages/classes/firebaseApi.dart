@@ -74,9 +74,7 @@ Future<void> configureFirebaseMessaging() async {
 Future initLocalNotifications() async {
   const android = AndroidInitializationSettings("@mipmap/launcher_icon");
   const settings = InitializationSettings(android: android);
-  await _localNotifications.initialize(
-    settings
-  );
+  await _localNotifications.initialize(settings);
 }
 
 Future<String> getDevideID() async {
@@ -94,9 +92,6 @@ Future<void> _onBackgroundMessageHandler(RemoteMessage message) async {
   print("onBackgroundMessage: $message");
 }
 
-void getToken() async {
-  await FirebaseMessaging.instance.getToken().then((value) {
-    print("Token: $value");
-    saveString('tokenNotification', value!);
-  });
+Future<String?> getToken() async {
+  return FirebaseMessaging.instance.getToken();
 }

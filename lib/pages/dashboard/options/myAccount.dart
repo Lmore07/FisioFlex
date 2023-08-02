@@ -5,7 +5,7 @@ import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/inputs.dart';
 import 'package:TeraFlex/pages/interfaces/userInterface.dart';
-import 'package:TeraFlex/pages/services/loginService.dart';
+import 'package:TeraFlex/pages/services/notificationService.dart';
 import 'package:flutter/material.dart';
 
 //Variables Globales
