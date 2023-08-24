@@ -26,8 +26,9 @@ Future<String> loginService(Credentials credentials) async {
         headers: headers);
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      await saveString('token', jsonResponse['token']);
-      LoginInformation decoded = decodificarToken(jsonResponse['token']);
+      await saveString('token', jsonResponse['data']['token']);
+      LoginInformation decoded =
+          decodificarToken(jsonResponse['data']['token']);
       await saveString('idUser', decoded.id.toString());
       await saveString('docNumber', decoded.docNumber);
       if (decoded.role != 'PATIENT') {
@@ -44,7 +45,7 @@ Future<String> loginService(Credentials credentials) async {
       await myInfoService();
       return 'OK';
     } else {
-      return jsonResponse['message'];
+      return jsonResponse['error'];
     }
   } catch (error) {
     return error.toString();

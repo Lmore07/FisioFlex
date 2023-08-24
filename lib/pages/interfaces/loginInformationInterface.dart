@@ -1,3 +1,5 @@
+import 'package:TeraFlex/pages/interfaces/interfaces.dart';
+
 class LoginInformation {
   final int id;
   final String docNumber;
@@ -20,4 +22,11 @@ class LoginInformation {
       iat: json['iat'],
     );
   }
+}
+
+class LoginResponse extends GeneralResponse<LoginInformation> {
+  LoginResponse(
+      {LoginInformation? data, String? message, int? statusCode, String? error})
+      : super(
+            data: data, message: message, statusCode: statusCode, error: error);
 }
