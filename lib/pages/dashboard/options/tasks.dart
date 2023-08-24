@@ -172,7 +172,7 @@ class _tasksListState extends State<tasksList> {
           tittle: task.task.title,
           subtitle: ' ${task.task.estimatedTime} minutos',
           onPressed: () async {
-            CustomEasyLoading.instance.showLoading("Cargando tarea...");
+            //CustomEasyLoading.instance.showLoading("Cargando tarea...");
             await Navigator.pushNamed(context, 'detail-task', arguments: {
               'idAssigment': task.id,
             }).then((value) {

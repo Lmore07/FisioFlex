@@ -7,7 +7,6 @@ import 'package:TeraFlex/pages/dashboard/options/notification.dart';
 import 'package:TeraFlex/pages/dashboard/options/tasks.dart';
 import 'package:TeraFlex/pages/security/forgotPassword.dart';
 import 'package:TeraFlex/pages/security/login.dart';
-import 'package:TeraFlex/pages/security/recoveryPassword.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
@@ -46,7 +45,6 @@ class MyApp extends StatelessWidget {
         'login': (context) => const Login(),
         'dashboard': (context) => const dashboardClient(),
         'recovery-password': (context) => const forgotPassword(),
-        'reset-password': (context) => const recoveryPassword(),
         'tasks-list': (context) => const tasksList(),
         'detail-task': (context) => const detailTask(),
         'my-account': (context) => const myAccount(),

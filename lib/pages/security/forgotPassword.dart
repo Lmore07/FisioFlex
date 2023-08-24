@@ -1,6 +1,9 @@
+import 'package:TeraFlex/pages/classes/messages.dart';
+import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
 import 'package:TeraFlex/pages/designs/background.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
 import 'package:TeraFlex/pages/designs/inputs.dart';
+import 'package:TeraFlex/pages/designs/txtParraph.dart';
 import 'package:TeraFlex/pages/designs/txtTitle.dart';
 import 'package:flutter/material.dart';
 
@@ -93,31 +96,14 @@ class forgotForm extends StatelessWidget {
               label: 'Olvidé la contraseña',
             ),
             SizedBox(height: 15),
-            InputWidget(
-                enable: true,
-                label: 'Cedula',
-                hint: 'Ingrese su cédula',
-                value: (value) => {_cedulaInput = value},
-                keyboardType: TextInputType.number),
-            InputWidget(
-                enable: true,
-                label: 'Nueva contraseña',
-                hint: 'Ingrese una nueva contraseña',
-                value: (value) => {_passwordInput = value},
-                keyboardType: TextInputType.number),
-            InputWidget(
-                enable: true,
-                label: 'Confirmar contraseña',
-                hint: 'Repita su nueva contraseña',
-                value: (value) => {_confirmPasswordInput = value},
-                keyboardType: TextInputType.number),
-            buttonFill(
-              label: 'Continuar',
+            txtParraph(label: "${getMessageRecoverPassword()}😀"),
+            SizedBox(height: 15),
+            buttonTest(
               onPressed: () {
-                Navigator.pushNamed(context, 'reset-password');
+                textToSpeech.speak(getMessageRecoverPassword());
               },
             ),
-            SizedBox(height: 9),
+            SizedBox(height: 15),
             buttonTransparent(
                 label: 'Volver',
                 onPressed: () {

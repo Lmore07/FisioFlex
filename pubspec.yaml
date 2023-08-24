@@ -38,7 +38,8 @@ dependencies:
   firebase_core: ^2.15.0
   firebase_messaging: ^14.6.5
   flutter_local_notifications: ^9.6.1
-
+  webview_flutter: any
+  youtube_player_iframe: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -59,9 +60,8 @@ dev_dependencies:
   path_provider: ^2.0.15
   flutter_launcher_icons: ^0.13.1
   carousel_slider: ^4.2.1
-  pod_player: ^0.2.0
+  pod_player: any
   device_info: any
-  
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true

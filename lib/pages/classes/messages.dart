@@ -20,3 +20,7 @@ String getMessageVoice(
 
   return randomMessage;
 }
+
+String getMessageRecoverPassword() {
+  return "Por favor, comunícate con tu terapeuta para poder reestablecer tu contraseña";
+}

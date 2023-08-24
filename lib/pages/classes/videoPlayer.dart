@@ -6,6 +6,7 @@ import 'package:TeraFlex/pages/services/multimediaService.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pod_player/pod_player.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 List<PodPlayerController> podPlayerControllers = [];
 final CarouselController _controller = CarouselController();
@@ -53,6 +54,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var index = 0;
     return SafeArea(
       child: Center(
           child: Column(
@@ -61,17 +63,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               future: loadMultimedia(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return CarouselSlider(
-                      carouselController: _controller,
-                      items: snapshot.data,
-                      options: CarouselOptions(
-                          autoPlay: false,
-                          height: 300,
-                          enlargeCenterPage: true,
-                          autoPlayCurve: Curves.fastLinearToSlowEaseIn,
-                          enlargeFactor: 0.5));
+                  return snapshot.data![index];
                 } else if (snapshot.hasError) {
-                  return Text("");
+                  return Text(
+                    "",
+                  );
                 } else {
                   return CircularProgressIndicator();
                 }
@@ -80,40 +76,26 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
-                  child: ElevatedButton(
-                      child: Icon(Icons.arrow_back),
-                      onPressed: () => _controller.previousPage())),
-              ...Iterable<int>.generate(widget.filesMultimedia.length)
-                  .map((e) => Flexible(
-                          child: ElevatedButton(
-                        onPressed: () => _controller.animateToPage(e),
-                        child: Text((e + 1).toString()),
-                      ))),
-              Flexible(
-                  child: ElevatedButton(
-                      child: Icon(Icons.arrow_forward),
-                      onPressed: () => _controller.nextPage())),
+              if (index > 0)
+                Flexible(
+                    child: ElevatedButton(
+                        child: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          setState(() {
+                            index -= 1;
+                          });
+                        })),
+              if (index < widget.filesMultimedia.length - 1)
+                Flexible(
+                    child: ElevatedButton(
+                        child: Icon(Icons.arrow_forward),
+                        onPressed: () {
+                          setState(() {
+                            index += 1;
+                          });
+                        })),
             ],
           ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: widget.url.asMap().entries.map((entry) {
-          //     return GestureDetector(
-          //       onTap: () => _controller.animateToPage(entry.key),
-          //       child: Container(
-          //         width: 12.0,
-          //         height: 12.0,
-          //         margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-          //         decoration: BoxDecoration(
-          //             shape: BoxShape.circle,
-          //             color: (Theme.of(context).brightness == Brightness.dark
-          //                     ? Colors.white
-          //                     : Colors.black)
-          //                 .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-          //       ),
-          //     );
-          //   }).toList(),
         ],
       )),
     );
@@ -123,15 +105,23 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     List<Widget> carouselItems = [];
     for (var i = 0; i < widget.filesMultimedia.length; i++) {
       if (widget.filesMultimedia[i].type == "online") {
-        var podPlayerYoutubeController = PodPlayerController(
-            playVideoFrom: PlayVideoFrom.youtube(
-              widget.filesMultimedia[i].url,
-            ),
-            podPlayerConfig: PodPlayerConfig(autoPlay: false))
-          ..initialise();
-        podPlayerControllers.add(podPlayerYoutubeController);
-        carouselItems
-            .add(PodVideoPlayer(controller: podPlayerYoutubeController));
+        var youtubePlayerController = YoutubePlayerController(
+            params: YoutubePlayerParams(
+                enableJavaScript: false,
+                showVideoAnnotations: false,
+                enableKeyboard: false,
+                showFullscreenButton: false,
+                showControls: true,
+                mute: false));
+        youtubePlayerController.loadVideoById(
+            videoId: YoutubePlayerController.convertUrlToId(
+                widget.filesMultimedia[i].url)!);
+        carouselItems.add(YoutubePlayerScaffold(
+          builder: (context, player) {
+            return player;
+          },
+          controller: youtubePlayerController,
+        ));
       } else if (videoExtensions.contains(widget.filesMultimedia[i].type)) {
         File video = await downloadFile(i);
         var podPlayerFileController = PodPlayerController(

@@ -22,3 +22,4 @@ Future<AssginmentResponse> assignmentDetailService(int idAssignment) async {
       statusCode: jsonResponse['statusCode']);
   return respuesta;
 }
+
