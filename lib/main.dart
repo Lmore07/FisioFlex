@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:TeraFlex/pages/classes/firebaseApi.dart';
 import 'package:TeraFlex/pages/dashboard/dashboard.dart';
 import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
@@ -10,6 +13,7 @@ import 'package:TeraFlex/pages/security/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'firebase_options.dart';
 
@@ -22,6 +26,10 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   savedResponse = await getString('token');
+  ByteData data =
+      await PlatformAssetBundle().load('assets/ca/_.uteq.edu.ec.crt');
+  SecurityContext.defaultContext
+      .setTrustedCertificatesBytes(data.buffer.asUint8List());
   runApp(const MyApp());
 }
 

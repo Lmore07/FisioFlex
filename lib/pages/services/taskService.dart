@@ -11,21 +11,25 @@ Future<TaskResponse> getTaskService(bool isCompleted) async {
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': 'Bearer ${await getString('token')}'
   };
-
-  final response = await http.get(
-      Uri.parse(
-          '${getVariableAPI()}/patients/${await getString('idUser')}/tasks?isCompleted=$isCompleted'),
-      headers: headers);
-  Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-  final List<Task>? taskData = jsonResponse['data'] != null
-      ? List<Task>.from(jsonResponse['data'].map((item) => Task.fromJson(item)))
-      : null;
-  final respuesta = TaskResponse(
-      message: jsonResponse['message'],
-      data: taskData,
-      statusCode: jsonResponse['statusCode'],
-      error: jsonResponse['error']);
-  return respuesta;
+  try {
+    final response = await http.get(
+        Uri.parse(
+            '${getVariableAPI()}/patients/${await getString('idUser')}/tasks?isCompleted=$isCompleted'),
+        headers: headers);
+    Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+    final List<Task>? taskData = jsonResponse['data'] != null
+        ? List<Task>.from(
+            jsonResponse['data'].map((item) => Task.fromJson(item)))
+        : null;
+    final respuesta = TaskResponse(
+        message: jsonResponse['message'],
+        data: taskData,
+        statusCode: jsonResponse['statusCode'],
+        error: jsonResponse['error']);
+    return respuesta;
+  } catch (e) {
+    throw e.toString();
+  }
 }
 
 Future<bool> completeTaskService(int idAssignment) async {

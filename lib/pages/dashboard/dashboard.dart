@@ -25,9 +25,10 @@ class _dashboardClientState extends State<dashboardClient> {
     requestPermission();
     getUserInformation('userInformation').then(
       (value) {
-        username = value!.firstName;
+        var firstName = value!.firstName.split(' ');
+        username = firstName[0];
         setState(() {
-          username = value.firstName;
+          username = firstName[0];
         });
       },
     );
