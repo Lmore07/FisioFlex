@@ -35,6 +35,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
 
   void getNotifications() {
     CustomEasyLoading.instance.showLoading('Cargando notificaciones...');
+    notificationList.clear();
     getAllNotifications().then((value) {
       CustomEasyLoading.instance.dismiss();
       if (value.data != null && value.data!.isNotEmpty) {
@@ -101,6 +102,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                 CustomEasyLoading.instance.dismiss();
                 CustomEasyLoading.instance
                     .showSuccess("Notificación eliminada");
+                notificationList.clear();
                 getNotifications();
               } else {
                 CustomEasyLoading.instance.dismiss();

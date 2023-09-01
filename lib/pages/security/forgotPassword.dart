@@ -1,4 +1,5 @@
 import 'package:TeraFlex/pages/classes/messages.dart';
+import 'package:TeraFlex/pages/classes/textToSpeech.dart';
 import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
 import 'package:TeraFlex/pages/designs/background.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
@@ -14,6 +15,7 @@ double _top = 0.35;
 String _cedulaInput = '';
 String _passwordInput = '';
 String _confirmPasswordInput = '';
+TextToSpeech textToSpeech = TextToSpeech();
 
 class forgotPassword extends StatefulWidget {
   const forgotPassword({super.key});

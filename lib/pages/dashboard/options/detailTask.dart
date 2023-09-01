@@ -12,17 +12,19 @@ import 'package:TeraFlex/pages/interfaces/userInterface.dart';
 import 'package:TeraFlex/pages/services/assignmentService.dart';
 import 'package:TeraFlex/pages/services/taskService.dart';
 import 'package:flutter/material.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 //Variables globales
 late int idAssigment;
 late List<String> videos = [];
 UserData? myInformation =
     UserData(id: 1, firstName: "", lastName: "", docNumber: "");
-TextToSpeech textToSpeech = TextToSpeech();
 late VideoPlayerScreen _videoPlayerScreen;
 
 class detailTask extends StatefulWidget {
   const detailTask({super.key});
+
+  static TextToSpeech textToSpeech = TextToSpeech();
 
   @override
   State<detailTask> createState() => _detailTaskState();
@@ -55,7 +57,7 @@ class _detailTaskState extends State<detailTask> {
               tittle: 'Detalle de tarea',
               subTittle: 'Atrás',
               onPressed: () {
-                textToSpeech.stop();
+                detailTask.textToSpeech.stop();
                 _videoPlayerScreen.dispose();
                 Navigator.pop(context);
               },
@@ -77,7 +79,13 @@ class detailTaskWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsetsDirectional.all(20),
+        padding: const EdgeInsetsDirectional.all(15),
+        margin:
+            EdgeInsetsDirectional.only(top: 15, start: 15, end: 15, bottom: 15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
         child: FutureBuilder(
             future: loadDataTask(),
             builder: (context, snapshot) {
@@ -99,12 +107,33 @@ class detailTaskWidget extends StatelessWidget {
                                 ),
                               ]),
                             ),
-                            buttonVoiceIcon(onPressed: () {
-                              textToSpeech.speak(getMessageVoice(
-                                  myInformation?.firstName,
-                                  snapshot.data!.data!.title,
-                                  snapshot.data!.data!.description!,
-                                  snapshot.data!.data!.estimatedTime));
+                            buttonVoiceIcon(onPressed: () async {
+                              var talk = true;
+                              for (var controller
+                                  in VideoPlayerScreen.youtubeControllers) {
+                                if (await controller.playerState ==
+                                        PlayerState.playing ||
+                                    await controller.playerState ==
+                                        PlayerState.buffering) {
+                                  talk = false;
+                                  break;
+                                }
+                              }
+                              for (var controller
+                                  in VideoPlayerScreen.podPlayerControllers) {
+                                if (controller.isVideoPlaying ||
+                                    controller.isVideoBuffering) {
+                                  talk = false;
+                                  break;
+                                }
+                              }
+                              if (talk) {
+                                detailTask.textToSpeech.speak(getMessageVoice(
+                                    myInformation?.firstName,
+                                    snapshot.data!.data!.title,
+                                    snapshot.data!.data!.description!,
+                                    snapshot.data!.data!.estimatedTime));
+                              }
                             }),
                           ]),
                       Padding(
@@ -152,7 +181,7 @@ void completedTrue(BuildContext context) async {
   _videoPlayerScreen.dispose();
   CustomEasyLoading.instance.showSuccess('Se ha completado su tarea');
   await Future.delayed(Duration(milliseconds: 1500));
-  textToSpeech.stop();
+  detailTask.textToSpeech.stop();
   Navigator.pop(context, true);
 }
 

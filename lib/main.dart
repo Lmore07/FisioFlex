@@ -5,6 +5,7 @@ import 'package:TeraFlex/pages/classes/firebaseApi.dart';
 import 'package:TeraFlex/pages/dashboard/dashboard.dart';
 import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
 import 'package:TeraFlex/pages/dashboard/options/help.dart';
+import 'package:TeraFlex/pages/dashboard/options/information.dart';
 import 'package:TeraFlex/pages/dashboard/options/myAccount.dart';
 import 'package:TeraFlex/pages/dashboard/options/notification.dart';
 import 'package:TeraFlex/pages/dashboard/options/tasks.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         'my-account': (context) => const myAccount(),
         'notification': (context) => const NotificationWidget(),
         'help': (context) => const helpMenu(),
+        'information': (context) => const InformationDev(),
       },
     );
   }

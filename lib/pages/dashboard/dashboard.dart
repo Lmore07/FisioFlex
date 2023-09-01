@@ -56,36 +56,48 @@ class _dashboardClientState extends State<dashboardClient> {
           body: Center(
             child: SingleChildScrollView(
               child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)),
+                margin: EdgeInsetsDirectional.all(20),
                 alignment: Alignment.center,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      spaced(20, 0),
                       cardButtonWidget(
                           icon: Icons.format_list_bulleted_rounded,
                           tittle: 'Tareas',
                           onPressed: () {
                             redirectToTasksList(context);
                           }),
-                      spaced(25, 0),
+                      spaced(20, 0),
                       cardButtonWidget(
                           icon: Icons.notifications_sharp,
                           tittle: 'Notificaciones',
                           onPressed: () {
                             redirectToNotification(context);
                           }),
-                      spaced(25, 0),
+                      spaced(20, 0),
                       cardButtonWidget(
                           icon: Icons.person_3_sharp,
                           tittle: 'Mi perfil',
                           onPressed: () {
                             redirectToAccount(context);
                           }),
-                      spaced(25, 0),
+                      spaced(20, 0),
                       cardButtonWidget(
                           icon: Icons.help_sharp,
                           tittle: 'Ayuda',
                           onPressed: () {
                             redirectToHelp(context);
+                          }),
+                      spaced(20, 0),
+                      cardButtonWidget(
+                          icon: Icons.info_rounded,
+                          tittle: 'Acerca de',
+                          onPressed: () {
+                            redirecToInformation(context);
                           }),
                       spaced(25, 0),
                     ]),
@@ -112,4 +124,8 @@ void redirectToHelp(BuildContext context) {
 
 void redirectToNotification(BuildContext context) {
   Navigator.pushNamed(context, 'notification');
+}
+
+void redirecToInformation(BuildContext context) {
+  Navigator.pushNamed(context, 'information');
 }

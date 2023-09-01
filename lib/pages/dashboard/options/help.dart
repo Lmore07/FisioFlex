@@ -1,5 +1,9 @@
+import 'package:TeraFlex/pages/classes/styles.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:flutter/material.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
+late YoutubePlayerController youtubePlayerController;
 
 class helpMenu extends StatefulWidget {
   const helpMenu({super.key});
@@ -9,6 +13,12 @@ class helpMenu extends StatefulWidget {
 }
 
 class _helpMenuState extends State<helpMenu> {
+  @override
+  void initState() {
+    super.initState();
+    cargaVideos();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,21 +36,47 @@ class _helpMenuState extends State<helpMenu> {
           ),
         ),
         body: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 25),
-                textTitleCards('¿Cómo completar tareas?'),
-                SizedBox(height: 8),
-                Container(
-                    constraints: BoxConstraints(maxHeight: 150),
-                    padding: EdgeInsetsDirectional.symmetric(horizontal: 25),
-                    child: Container()),
-              ],
-            ),
+          child: Column(
+            children: [
+              cargaAyudas('¿Como completar tareas?',
+                  'https://www.youtube.com/watch?v=I-VKAseJFvc'),
+              cargaAyudas('¿Como completar tareas?',
+                  'https://www.youtube.com/watch?v=I-VKAseJFvc'),
+              cargaAyudas('¿Como completar tareas?',
+                  'https://www.youtube.com/watch?v=I-VKAseJFvc'),
+              spaced(15, 0)
+            ],
           ),
         ),
+      ),
+    );
+  }
+
+  Container cargaAyudas(String title, video) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      margin: EdgeInsetsDirectional.only(top: 15, start: 15, end: 15),
+      child: Column(
+        children: [
+          SizedBox(height: 8),
+          textTitleCards(title),
+          SizedBox(height: 8),
+          Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: YoutubePlayerScaffold(
+                builder: (context, player) {
+                  return player;
+                },
+                controller:
+                    YoutubePlayerController(params: YoutubePlayerParams())
+                      ..loadVideo(video)
+                      ..stopVideo(),
+              )),
+          spaced(15, 0)
+        ],
       ),
     );
   }
@@ -56,5 +92,18 @@ class _helpMenuState extends State<helpMenu> {
               fontFamily: 'Nunito',
               fontWeight: FontWeight.w800)),
     );
+  }
+
+  void cargaVideos() {
+    youtubePlayerController = YoutubePlayerController(
+        params: YoutubePlayerParams(
+            enableJavaScript: false,
+            loop: false,
+            showVideoAnnotations: false,
+            enableKeyboard: false,
+            showFullscreenButton: false,
+            showControls: true));
+    youtubePlayerController
+        .loadVideo('https://www.youtube.com/watch?v=I-VKAseJFvc');
   }
 }

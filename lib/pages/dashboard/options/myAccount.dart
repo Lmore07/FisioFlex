@@ -1,5 +1,6 @@
 import 'package:TeraFlex/pages/classes/sharedPreferences.dart';
 import 'package:TeraFlex/pages/classes/styles.dart';
+import 'package:TeraFlex/pages/classes/textToSpeech.dart';
 import 'package:TeraFlex/pages/dashboard/options/detailTask.dart';
 import 'package:TeraFlex/pages/designs/appBar.dart';
 import 'package:TeraFlex/pages/designs/buttons.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 //Variables Globales
 UserData? myInformation =
     UserData(id: 1, firstName: "", lastName: "", docNumber: "");
+TextToSpeech textToSpeech = TextToSpeech();
 
 class myAccount extends StatefulWidget {
   const myAccount({super.key});
@@ -34,39 +36,53 @@ class _myAccountState extends State<myAccount> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(100),
-            child: AppBarCustom(
-                subTittle: 'Atrás',
-                tittle: 'Mi perfil',
-                icon: Icons.arrow_back_rounded,
-                onPressed: () {
-                  textToSpeech.stop();
-                  Navigator.pop(context);
-                })),
-        body: SingleChildScrollView(
-            child: Container(
-                child: Column(
-          children: [
-            spaced(25, 0),
-            ImageProfile(),
-            spaced(25, 0),
-            inputProfile(
-                "${myInformation?.firstName} ${myInformation?.lastName}",
-                'Nombres',
-                lines: 1),
-            inputProfile(myInformation?.docNumber, 'Cédula', lines: 1),
-            if (myInformation?.phone != null)
-              inputProfile(myInformation?.phone, 'Teléfono', lines: 1),
-            if (myInformation?.description != null)
-              inputProfile(myInformation?.description, 'Descripción', lines: 5),
-            spaced(25, 0),
-            actionsButtons(),
-            spaced(25, 0)
-          ],
-        ))),
+      child: WillPopScope(
+        onWillPop: () async {
+          textToSpeech.stop();
+          return true;
+        },
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: PreferredSize(
+              preferredSize: Size.fromHeight(100),
+              child: AppBarCustom(
+                  subTittle: 'Atrás',
+                  tittle: 'Mi perfil',
+                  icon: Icons.arrow_back_rounded,
+                  onPressed: () {
+                    textToSpeech.stop();
+                    Navigator.pop(context);
+                  })),
+          body: SingleChildScrollView(
+              child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  margin: EdgeInsetsDirectional.all(15),
+                  child: Column(
+                    children: [
+                      spaced(25, 0),
+                      ImageProfile(),
+                      spaced(25, 0),
+                      inputProfile(
+                          "${myInformation?.firstName} ${myInformation?.lastName}",
+                          'Nombres',
+                          lines: 1),
+                      inputProfile(myInformation?.docNumber, 'Cédula',
+                          lines: 1),
+                      if (myInformation?.phone != null)
+                        inputProfile(myInformation?.phone, 'Teléfono',
+                            lines: 1),
+                      if (myInformation?.description != null)
+                        inputProfile(myInformation?.description, 'Descripción',
+                            lines: 5),
+                      spaced(25, 0),
+                      actionsButtons(),
+                      spaced(25, 0)
+                    ],
+                  ))),
+        ),
       ),
     );
   }

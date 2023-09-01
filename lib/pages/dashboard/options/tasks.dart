@@ -66,69 +66,77 @@ class _tasksListState extends State<tasksList> {
                 icon: Icons.arrow_back_rounded,
               )),
           body: Container(
-            padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
-            margin: EdgeInsets.only(top: 20),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                'Filtrar tareas por:',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF2F2F2F),
-                    fontFamily: 'Nunito'),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(width: 1, color: Colors.white),
-                    borderRadius: BorderRadius.circular(10)),
-                child: DropdownButton(
-                  onChanged: (value) {
-                    setState(() {
-                      selected = value!;
-                      tasksLoad();
-                    });
-                  },
-                  value: selected,
-                  items: [
-                    DropdownMenuItem(
-                        child: Text('Tareas pendientes'), value: false),
-                    DropdownMenuItem(
-                        child: Text('Tareas completadas'), value: true)
-                  ],
-                  isExpanded: true,
-                  icon: Icon(
-                    Icons.arrow_drop_down_rounded,
-                    color: Colors.black,
-                  ),
-                  iconSize: 50,
-                  hint: Text(
-                    'Selecciona una opción',
+            margin: EdgeInsetsDirectional.only(start: 15, end: 15, top: 15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+            ),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  spaced(10, 5),
+                  Text(
+                    'Filtrar tareas por:',
+                    textAlign: TextAlign.start,
                     style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Nunito',
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2F2F2F),
+                        fontFamily: 'Nunito'),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsetsDirectional.symmetric(horizontal: 20),
+                    padding: EdgeInsetsDirectional.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: backgroundColor,
+                        border: Border.all(width: 1, color: Colors.white),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: DropdownButton(
+                      onChanged: (value) {
+                        setState(() {
+                          selected = value!;
+                          tasksLoad();
+                        });
+                      },
+                      value: selected,
+                      items: [
+                        DropdownMenuItem(
+                            child: Text('Tareas pendientes'), value: false),
+                        DropdownMenuItem(
+                            child: Text('Tareas completadas'), value: true)
+                      ],
+                      isExpanded: true,
+                      icon: Icon(
+                        Icons.arrow_drop_down_rounded,
+                        color: Colors.black,
+                      ),
+                      iconSize: 50,
+                      hint: Text(
+                        'Selecciona una opción',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Nunito',
+                        ),
+                      ),
+                      underline: Container(),
                     ),
                   ),
-                  underline: Container(),
-                ),
-              ),
-              spaced(25, 0),
-              Expanded(
-                  child: SingleChildScrollView(
-                child: Container(
-                    child: Column(
-                  children: showTasks(context),
-                )),
-              ))
-            ]),
+                  spaced(25, 0),
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: Column(
+                          children: showTasks(context),
+                        )),
+                  ))
+                ]),
           ),
         ),
       ),

@@ -61,26 +61,17 @@ class InputWidgetProfile extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 10),
       child: TextField(
         enabled: false,
-        keyboardType: TextInputType.none,
+        keyboardType: TextInputType.multiline,
         maxLines: maxLines ?? 1,
         decoration: InputDecoration(
-            labelText: label,
-            filled: true,
-            floatingLabelStyle: TextStyle(
-              color: Colors.black,
-            ),
-            alignLabelWithHint: true,
-            contentPadding: EdgeInsets.symmetric(
-              vertical: 8.0,
-              horizontal: 10,
-            ),
-            fillColor: Color(0xFFEDEDED),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-            ),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.white, width: 0))),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.white, width: 0)),
+          filled: true,
+          fillColor: Color(0xFFEDEDED),
+          contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
+        ),
+        controller: TextEditingController(text: label),
       ),
     );
   }
