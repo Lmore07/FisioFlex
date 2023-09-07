@@ -17,8 +17,8 @@ class Task {
     return Task(
         id: json['id'],
         task: TaskDetail.fromJson(json['task']),
-        createdAt: DateFormat('EEEE, MMMM d y, H:mm:ss', 'es')
-            .parse(json['createdAt']),
+        createdAt:
+            DateFormat('EEEE, MMMM d y, H:mm', 'es').parse(json['createdAt']),
         dueDate: DateFormat('y-M-d').parse(json['dueDate']));
   }
 }

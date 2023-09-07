@@ -99,7 +99,7 @@ class detailTaskWidget extends StatelessWidget {
                             Container(
                               constraints: BoxConstraints(
                                   maxWidth:
-                                      MediaQuery.of(context).size.width - 112),
+                                      MediaQuery.of(context).size.width - 140),
                               child: Wrap(children: [
                                 Text(
                                   snapshot.data!.data!.title,
